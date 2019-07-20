@@ -1,0 +1,217 @@
+@font-face{
+    font-family: 'Sans';
+    src: url(./fonts/SansSerif.ttf)
+}
+h3{
+    margin: 0;
+    padding: 0;
+}
+body {
+    height: 100vh;
+    background-color: #f1f1f1;
+    overflow: hidden;
+    font-family: 'Sans' ; 
+}
+#root{
+    height: 100vh;
+  
+}
+.topMenuBox{
+    display: flex;
+    height:6vh;
+    background-color: #f1f1f1;
+    justify-content: start;
+    align-items: center;
+    border-bottom: 1px solid #46ccac;
+    overflow: hidden;
+    
+}
+.titleBox{
+    width: 20vw;
+    height: 100%;
+    background-color: #46ccac;
+    color: #ffffff;
+    line-height: 2vh;
+    text-align: center;
+    transform: skew(-30deg);
+    border-bottom: 1px solid #46ccac;
+    box-shadow: -30px 0px 0 0px #46ccac;
+}
+
+.title{
+    transform: skew(30deg);
+}
+
+.mainMenuButtonBox{
+    display: flex;
+    font-size: 1.2em;
+    margin-left: 10px;
+}
+
+.templateBox {
+    transform: skew(-30deg);
+    
+}
+.templateBox:not(.activeButton):hover {
+    color:#46ccac;
+}
+
+.activeButton{
+    background-color: #46ccac;
+    color: white;
+}
+
+.topMenuButton{
+    width: 9vw;
+    text-align:center;
+    cursor: pointer;
+}
+
+.buttons{
+    transform: skew(30deg);
+}
+
+.contentFrame{
+    position: relative;
+    height: 84%;
+}
+
+.contentBox{
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.boxForChoise{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    height: 30vh;
+    width: 25vw;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px #a7a7a7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 10px;
+    font-weight: 100;
+    display: none;
+ 
+}
+.choiseForm{
+    margin-left: 10%;
+    
+}
+.choiseForm input, label{
+    cursor: pointer;
+    
+}
+.listBox{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.list{
+    padding-left: 10px;
+    border-left: 1px solid #a7a7a7;
+}
+.listTitle{
+    margin-right: 10px;
+    text-align: center;
+    color: #46ccac;
+    text-decoration: none; 
+    border-bottom: 1px dashed #46ccac;
+    cursor: pointer;
+}
+.nextButton{
+    height: 40px;
+    width: 100px;
+    background-color: #46ccac;
+    text-align: center;
+    line-height: 1.5em;
+    color: #ffffff;
+    font-size: 18pt;
+    border-radius: 5px;
+    margin-left: 10%;
+    cursor: pointer;
+}
+
+.boxForTypeForm{
+    position: absolute;
+    width: 68%;
+    height: 100%;
+    background-color: red;
+    overflow:hidden;
+    left: 4%;
+    
+}
+.boxTitleForm{
+    position: relative;
+    height: 15%;
+    background-color: blueviolet;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.formTitle{
+    position: relative;
+    margin-top: 10px; 
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 100;
+}
+
+.formButtons{
+    position: relative;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    display: flex;
+    width: 60%;
+    color: #ffffff;
+    justify-content: space-between;
+}
+
+
+
+.boxControllForm{
+    position: relative;
+    height: 15%;
+    background-color: blue;
+}
+
+
+.boxForForm{
+    position: relative;
+    height: 70%;
+}
+.chatBox {
+    position: absolute;
+    width: 24%;
+    height: 100%;
+    background: green;
+    left: 74%;
+}
+
+
+.footerBox{
+    width: 100%;
+    height: 6vh;
+    color: #a7a7a7;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #a7a7a7;
+    align-items: center;
+}
+
+.footerMenuBox{
+    display: flex;
+    justify-content: space-evenly;
+    width: 50vw;
+}
+.footerMenuBox .templateBox{
+    transform: skew(0deg);
+    background: none;
+}
+
+
