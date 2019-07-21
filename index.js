@@ -28,7 +28,27 @@ const formButtons = document.createElement("div");
 const personalDate = document.createElement("div");
 const creditCartDate = document.createElement("div");
 const result = document.createElement("div");
+/* chat consts */
 
+
+const chatBoxHead = document.createElement("div");
+const supportImg = document.createElement("div");
+const supportDescription = document.createElement("div");
+const greenPoint =  document.createElement("div");
+const chatBoxMessageFieldBox= document.createElement("div");
+const chatBoxMessageField = document.createElement("div");
+const chatBoxFooter = document.createElement("div");
+const inputMessage = document.createElement('textarea');
+const messageSubmit = document.createElement("div");
+const annasMessageBox = document.createElement("div");
+const annasMessagePic = document.createElement("div");
+const annasMessageText = document.createElement("div");
+const usersMessageBox = document.createElement("div");
+const usersMessageText = document.createElement("div");
+
+
+
+/*end chat consts */
 const boxForForm = document.createElement("div");
 const boxControllForm = document.createElement("div");
 /*For choise box*/
@@ -112,6 +132,68 @@ formButtons.appendChild(result);
 boxForTypeForm.appendChild(boxTitleForm);
 boxForTypeForm.appendChild(boxForForm);
 boxForTypeForm.appendChild(boxControllForm);
+/* credit cart */
+
+/*chat */
+
+chatBoxHead.classList.add('chatBoxHead');
+supportImg.classList.add('supportImg');
+supportDescription.classList.add('supportDescription');
+supportDescription.innerText = 'Анна в чате';
+greenPoint.classList.add('greenPoint');
+chatBoxMessageFieldBox.classList.add('chatBoxMessageFieldBox');
+chatBoxMessageField.classList.add('chatBoxMessageField');
+chatBoxFooter.classList.add('chatBoxFooter');
+inputMessage.classList.add('inputMessage');
+inputMessage.placeholder = 'Ваше сообщение ...';
+messageSubmit.classList.add('messageSubmit');
+annasMessageBox.classList.add('annasMessageBox');
+annasMessagePic.classList.add('annasMessagePic');
+annasMessageText.classList.add('annasMessageText');
+annasMessageText.innerText = 'Здравствуйте! Пишите мне, если у вас возникнут вопросы по работе сайта';
+annasMessageBox.appendChild(annasMessagePic);
+annasMessageBox.appendChild(annasMessageText);
+chatBoxHead.appendChild(supportImg);
+chatBoxHead.appendChild(supportDescription);
+chatBoxHead.appendChild(greenPoint);
+chatBoxFooter.appendChild(inputMessage);
+chatBoxFooter.appendChild(messageSubmit);
+chatBox.appendChild(chatBoxHead);
+chatBoxMessageFieldBox.appendChild(chatBoxMessageField);
+chatBox.appendChild(chatBoxMessageFieldBox);
+chatBox.appendChild(chatBoxFooter);
+usersMessageBox.classList.add('usersMessageBox');
+usersMessageText.classList.add('usersMessageText');
+usersMessageBox.appendChild(usersMessageText);
+
+
+setTimeout(()=> chatBoxMessageField.appendChild(annasMessageBox),  5000);
+function chattedClick (){
+  let messageBox = document.createElement('div'),
+      messageText = document.createElement('div'),
+      suppMessageBox = document.createElement('div'),
+      suppMessagePic = document.createElement('div'),
+      suppMessageText = document.createElement('div');
+  suppMessageBox.classList.add('annasMessageBox');
+  suppMessagePic.classList.add('annasMessagePic');
+  suppMessageText.classList.add('annasMessageText');   
+  suppMessageBox.appendChild(suppMessagePic);
+  suppMessageBox.appendChild(suppMessageText); 
+  suppMessageText.innerText = annasMessageText.innerText;
+  messageBox.classList.add('usersMessageBox');
+  messageText.classList.add('usersMessageText');
+  messageBox.appendChild(messageText);
+  if (inputMessage.value.length) {
+    messageText.innerText = inputMessage.value;
+    chatBoxMessageField.append(messageBox);
+    inputMessage.value = '';
+    setTimeout(()=> chatBoxMessageField.appendChild(suppMessageBox),  1000);
+  }
+  console.log(inputMessage.value);
+}
+
+messageSubmit.addEventListener('click', chattedClick);
+
 
 /*add some styles */
 
@@ -146,7 +228,6 @@ const customizeMenu = (arrButtons, arrNames, addClass) => {
 };
 const addClass = (element, classes) => {
   let len = element.length;
-  console.log(len);
   if (len) {
     for (let i = 0; i < len; i++) {
       element[i].classList.add(classes);
