@@ -15,6 +15,7 @@ const footerText = [
   "Инструкции",
   "Рекламодателям"
 ];
+const formFieldQuant = 13;
 const mainMenu = [];
 const footerMenu = [];
 const contentBox = [];
@@ -29,8 +30,6 @@ const personalDate = document.createElement("div");
 const creditCartDate = document.createElement("div");
 const result = document.createElement("div");
 /* chat consts */
-
-
 const chatBoxHead = document.createElement("div");
 const supportImg = document.createElement("div");
 const supportDescription = document.createElement("div");
@@ -48,9 +47,80 @@ const usersMessageText = document.createElement("div");
 
 
 
-/*end chat consts */
+
+/*personaldate*/
+const personalDateContentBox = document.createElement("div");
+const personalDateContentTitle = document.createElement("div");
+const personalDateContentForm = document.createElement("form");
+const userNameBox = document.createElement("div");
+const userNameDescr = document.createElement("label");
+const userNameInput = document.createElement("input"); 
+
+const userSurnameBox = document.createElement("div");
+const userSurnameDescr = document.createElement("label");
+const userSurnameInput = document.createElement("input");
+
+const userFatherBox = document.createElement("div");
+const userFatherDescr = document.createElement("label");
+const userFatherInput = document.createElement("input");
+
+const userBirthdayBox = document.createElement("div");
+const userBirthdayDescr = document.createElement("label");
+const userBirthdayInput = document.createElement("input");
+const userBirthdayCalendar = document.createElement("div");
+
+const userGenderBox = document.createElement("div");
+const userGenderDescr = document.createElement("label");
+const userGenderInput = document.createElement("div");
+const userGenderInputMale = document.createElement("input");
+const userGenderInputFemale = document.createElement("input");
+
+const userCountryBox = document.createElement("div");
+const userCountryDescr = document.createElement("label");
+const userCountryInput = document.createElement("form");
+const userCountryInputField = document.createElement("input");
+const userCountryInputDatalist = document.createElement("datalist");
+
+const userAdressBox = document.createElement("div");
+const userAdressyDescr = document.createElement("label");
+const userAdressInput = document.createElement("input");
+const userAdressLink = document.createElement("div");
+
+const userMotherBox = document.createElement("div");
+const userMotherDescr = document.createElement("label");
+const userMotherInput = document.createElement("input");
+
+const userBankBox = document.createElement("div");
+const userBankDescr = document.createElement("label");
+const userBankInput = document.createElement("input");
+
+const userSourceBox = document.createElement("div");
+const userSourceDescr = document.createElement("label");
+const userSourceInput = document.createElement("textarea");
+const userSourceSoluthion = document.createElement("label");
+
+const userFriendBox = document.createElement("div");
+const userFriendDescr = document.createElement("label");
+const userFriendInput = document.createElement("input");
+
+const userTelBox = document.createElement("div");
+const userTelDescr = document.createElement("label");
+const userTelInput = document.createElement("textarea");
+const userTelSoluthion = document.createElement("label");
+
+const userFootballBox = document.createElement("div");
+const userFootballDescr = document.createElement("label");
+const userFootballInput = document.createElement("textarea");
+
+let formFields = [];
+
+/** */
+
+
 const boxForForm = document.createElement("div");
 const boxControllForm = document.createElement("div");
+
+
 /*For choise box*/
 const boxForChoise = document.createElement("div");
 for (let i = 0; i < 4; i++) {
@@ -191,9 +261,174 @@ function chattedClick (){
   }
   console.log(inputMessage.value);
 }
-
 messageSubmit.addEventListener('click', chattedClick);
 
+
+/** personal data */
+personalDateContentBox.classList.add('personalDateContentBox');
+personalDateContentTitle.classList.add('personalDateContentTitle');
+personalDateContentForm.classList.add('personalDateContentForm');
+personalDateContentBox.appendChild(personalDateContentTitle);
+personalDateContentBox.appendChild(personalDateContentForm);
+boxForForm.appendChild(personalDateContentBox);
+personalDateContentTitle.innerText =  'Все поля формы обязательны для заполнения';
+
+userNameDescr.classList.add('userNameDescr');
+userNameBox.classList.add('userNameBox');
+userNameInput.classList.add('userNameInput');
+
+userSurnameBox.classList.add('userSurnameBox')
+userSurnameDescr.classList.add('userSurnameDescr');
+userSurnameInput.classList.add('userSurnameInput');
+
+userFatherBox.classList.add('userFatherBox');
+userFatherDescr.classList.add('userFatherDescr');
+userFatherInput.classList.add('userFatherInput');
+
+userBirthdayBox.classList.add('userBirthdayBox');
+userBirthdayDescr.classList.add('userBirthdayDescr');
+userBirthdayInput.classList.add('userBirthdayInput');
+userBirthdayCalendar.classList.add('userBirthdayCalendar');
+
+userGenderBox.classList.add('userGenderBox');
+userGenderDescr.classList.add('userGenderDescr');
+userGenderInput.classList.add('userGenderInput');
+userGenderInputMale.classList.add('userGenderInputMale');
+userGenderInputFemale.classList.add('userGenderInputFemale');
+
+userCountryBox.classList.add('userCountryBox');
+userCountryDescr.classList.add('userCountryDescr');
+userCountryInput.classList.add('userCountryInput');
+userCountryInputField.classList.add('userCountryInputField');
+userCountryInputDatalist.classList.add('userCountryInputDatalist');
+
+userAdressBox.classList.add('userAdressBox');
+userAdressyDescr.classList.add('userAdressyDescr');
+userAdressInput.classList.add('userAdressInput');
+userAdressLink.classList.add('userAdressLink');
+
+userMotherBox.classList.add('userMotherBox');
+userMotherDescr.classList.add('userMotherDescr');
+userMotherInput.classList.add('userMotherInput');
+
+userBankBox.classList.add('userBankBox');
+userBankDescr.classList.add('userBankDescr');
+userBankInput.classList.add('userBankInput');
+
+userSourceBox.classList.add('userSourceBox');
+userSourceDescr.classList.add('userSourceDescr');
+userSourceInput.classList.add('userSourceInput');
+userSourceSoluthion.classList.add('userSourceSoluthion');
+
+userFriendBox.classList.add('userFriendBox');
+userFriendDescr.classList.add('userFriendDescr');
+userFriendInput.classList.add('userFriendInput');
+
+userTelBox.classList.add('userTelBox');
+userTelDescr.classList.add('userTelDescr');
+userTelInput.classList.add('userTelInput');
+userTelSoluthion.classList.add('userTelSoluthion');
+
+userFootballBox.classList.add('userFootballBox');
+userFootballDescr.classList.add('userFootballDescr');
+userFootballInput.classList.add('userFootballInput');
+/*------------------ */
+userNameDescr.innerText = 'Имя:';
+userNameBox.appendChild(userNameDescr);
+userNameBox.appendChild(userNameInput);
+
+userSurnameBox.appendChild(userSurnameDescr);
+userSurnameDescr.innerText = 'Фамилия:';
+userSurnameBox.appendChild(userSurnameInput);
+
+userFatherBox.appendChild(userFatherDescr);
+userFatherBox.appendChild(userFatherInput);
+userFatherDescr.innerText = 'Отчество:';
+
+userBirthdayBox.appendChild(userBirthdayDescr);
+userBirthdayBox.appendChild(userBirthdayInput);
+userBirthdayBox.appendChild(userBirthdayCalendar);
+userBirthdayDescr.innerText = 'Дата рождения:';
+
+userGenderBox.appendChild(userGenderDescr);
+userGenderBox.appendChild(userGenderInput);
+userGenderInput.appendChild(userGenderInputMale);
+userGenderInput.appendChild(document.createTextNode('Мужской'));
+userGenderInput.appendChild(userGenderInputFemale);
+userGenderInput.appendChild(document.createTextNode('Женский'));
+userGenderInputFemale.innerText = 'Женский';
+userGenderInputMale.innerText = 'Мужской';
+Object.assign(userGenderInputMale, {type: 'radio', name: 'sex', value: 'Male', checked: true});
+Object.assign(userGenderInputFemale, {type: 'radio', name: 'sex', value: 'Female'});
+userGenderDescr.innerText = 'Пол:';
+userCountryBox.appendChild(userCountryDescr);
+userCountryBox.appendChild(userCountryInput);
+userCountryDescr.innerText = 'Страна проживания:';
+userCountryInput.appendChild(userCountryInputField);
+userCountryInput.appendChild(userCountryInputDatalist);
+userCountryInputField.setAttribute('list','Countryes' );
+userCountryInputDatalist.id = 'Countryes';
+let countryes = ['Беларусь', 'Казахстан', 'Россия', 'Украина'];
+for(let i = 0; i < 4; i++) {
+  let country = document.createElement('option');
+  country.innerText = countryes[i];
+  userCountryInputDatalist.appendChild(country);
+}
+
+userAdressBox.appendChild(userAdressyDescr);
+userAdressBox.appendChild(userAdressInput);
+userAdressBox.appendChild(userAdressLink);
+userAdressLink.innerHTML = '<a href="https://www.b2b.by/info/post_indexes.html">Узнать индекс</a>';
+userAdressyDescr.innerText = 'Адрес, почтовый индекс:';
+
+userMotherBox.appendChild(userMotherDescr);
+userMotherBox.appendChild(userMotherInput);
+userMotherDescr.innerText = 'Девичья фамилия матери:';
+
+userBankBox.appendChild(userBankDescr);
+userBankBox.appendChild(userBankInput);
+userBankDescr.innerText = 'Кодовое слово в вашем банке:';
+
+userSourceBox.appendChild(userSourceDescr);
+userSourceBox.appendChild(userSourceInput);
+userSourceDescr.innerText = 'Как вы узнали о нашем сайте:';
+userSourceSoluthion.innerText = 'Из газет, телевидения, радио или проч.';
+
+userFriendBox.appendChild(userFriendDescr);
+userFriendBox.appendChild(userFriendInput);
+userFriendDescr.innerText = 'Email друга:';
+userTelBox.appendChild(userTelDescr);
+userTelBox.appendChild(userTelInput);
+function isMale(){
+  if (userGenderInputFemale.checked) {
+    userTelBox.innerText = 'Номер телефона вашего парня:';
+  } else {
+    userTelBox.innerText = 'Номер телефона вашей девушки';
+  }
+}
+isMale();
+userFootballBox.appendChild(userFootballDescr);
+userFootballBox.appendChild(userFootballInput);
+userFootballDescr.innerText = 'Ваша любимая команда';
+/******************************* */
+
+personalDateContentForm.appendChild(userNameBox);
+personalDateContentForm.appendChild(userSurnameBox);
+personalDateContentForm.appendChild(userFatherBox);
+personalDateContentForm.appendChild(userBirthdayBox);
+personalDateContentForm.appendChild(userGenderBox);
+personalDateContentForm.appendChild(userCountryBox);
+personalDateContentForm.appendChild(userAdressBox);
+personalDateContentForm.appendChild(userMotherBox);
+personalDateContentForm.appendChild(userBankBox);
+personalDateContentForm.appendChild(userSourceBox);
+personalDateContentForm.appendChild(userFriendBox);
+personalDateContentForm.appendChild(userTelBox);
+personalDateContentForm.appendChild(userFootballBox);
+formFields = personalDateContentForm.childNodes;
+for(let i = 0, len = formFields.length; i < len; i++){
+  formFields[i].classList.add('formfields');
+}
 
 /*add some styles */
 
