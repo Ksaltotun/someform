@@ -98,7 +98,6 @@ body {
     flex-direction: column;
     justify-content: space-evenly;
     padding: 10px;
-    
     display: none;
  
 }
@@ -153,7 +152,7 @@ body {
 }
 .boxTitleForm{
     position: relative;
-    height: 15%;
+    height: 12%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -170,14 +169,16 @@ body {
 }
 
 .formButtons{
+    height: 100%;
     position: relative;
-    margin-bottom: 10px;
     margin-left: 10px;
     display: flex;
-    width: 46%;
+    width: 66.2%;
     justify-content: space-between;
     margin-left: 50px;
     font-size: 16px;
+    align-items: flex-end;
+    
 }
 
 .boxControllForm{
@@ -188,10 +189,14 @@ body {
 .boxForForm{
     position: relative;
     height: 70%;
+    display: flex;
+    justify-content: center;
 }
 .personalDateContentBox{
     height: 100%;
     overflow-y: scroll;
+    width: 90%;
+    display: none;
 }
 
 .personalDateContentForm{
@@ -209,11 +214,7 @@ body {
     display: flex;
     height: 50px;
     justify-content: space-between;
-    
     align-items: flex-end;
-    
-    
-   
 }
 
 .formfields input {
@@ -221,10 +222,77 @@ body {
     border: 1px solid #a7a7a7;
     padding: 0;
 }
-
+/*------------------------------------*/
+.creditCardContentBox{
+    width: 90%;
+    display: none;
+}
+/*-----------------------------------*/
+.resultContentBox{
+    background-color: #feee85;
+    width: 90%;
+    display: none;
+}
 
 /* ------------------------------ */
 
+.buttonControl{
+    width: 33%;
+    text-align: center;
+}
+
+.active{
+    border-bottom: 4px solid #46ccac;
+    color: #46ccac;
+}
+.nextButonForm{
+    height: 50px;
+    width: 100px;
+    position: absolute;
+    background-color: #46ccac;
+    top: 50%;
+    left: 60%;
+    text-align: center;
+    font-size: 20px;
+    line-height: 2em;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    transform: translate(0, -30%);
+}
+.prevButtonForm{
+    width: 250px;
+    height: 20px;
+    color: #46ccac;
+    position: absolute;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    top: 50%;
+    left: 30%;
+    cursor: pointer;
+    display: none;
+    
+}
+.textBack{
+    border-bottom: 1px solid #46ccac;
+}
+.prevButtonForm:hover{
+    color: red;
+}
+.prevButtonForm:hover .textBack{
+    border-bottom: 1px solid red;
+}
+
+.backArrow{
+    height: 10px;
+    width: 15px;
+    margin-right: 5px;
+    background-image: url(./images/arrow-2.png);
+    background-repeat: no-repeat;
+}
+
+/*--------------------------------*/
 .chatBox {
     position: absolute;
     width: 24%;
@@ -347,8 +415,6 @@ body {
     transform: translate(0, -50%);
     cursor: pointer;
 }
-
-
 
 /**/
 

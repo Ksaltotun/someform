@@ -29,15 +29,23 @@ const formButtons = document.createElement("div");
 const personalDate = document.createElement("div");
 const creditCartDate = document.createElement("div");
 const result = document.createElement("div");
+const addClass = (element, classes) => {
+  let len = element.length;
+  if (len) {
+    for (let i = 0; i < len; i++) {
+      element[i].classList.add(classes);
+    }
+  } else element.classList.add(classes);
+};
 /* chat consts */
 const chatBoxHead = document.createElement("div");
 const supportImg = document.createElement("div");
 const supportDescription = document.createElement("div");
-const greenPoint =  document.createElement("div");
-const chatBoxMessageFieldBox= document.createElement("div");
+const greenPoint = document.createElement("div");
+const chatBoxMessageFieldBox = document.createElement("div");
 const chatBoxMessageField = document.createElement("div");
 const chatBoxFooter = document.createElement("div");
-const inputMessage = document.createElement('textarea');
+const inputMessage = document.createElement("textarea");
 const messageSubmit = document.createElement("div");
 const annasMessageBox = document.createElement("div");
 const annasMessagePic = document.createElement("div");
@@ -45,16 +53,13 @@ const annasMessageText = document.createElement("div");
 const usersMessageBox = document.createElement("div");
 const usersMessageText = document.createElement("div");
 
-
-
-
 /*personaldate*/
 const personalDateContentBox = document.createElement("div");
 const personalDateContentTitle = document.createElement("div");
 const personalDateContentForm = document.createElement("form");
 const userNameBox = document.createElement("div");
 const userNameDescr = document.createElement("label");
-const userNameInput = document.createElement("input"); 
+const userNameInput = document.createElement("input");
 
 const userSurnameBox = document.createElement("div");
 const userSurnameDescr = document.createElement("label");
@@ -114,15 +119,47 @@ const userFootballInput = document.createElement("textarea");
 
 let formFields = [];
 
-/** */
+/*credit card consts */
+const creditCardContentBox = document.createElement("div");
+const creditCardContentTitle = document.createElement("div");
+const creditCardContentForm = document.createElement("form");
 
+const cardNumberBox = document.createElement("div");
+const cardNumberDescr = document.createElement("label");
+const cardNumberInput = document.createElement("input");
+
+const monthYearBox = document.createElement("div");
+const monthYearDescr = document.createElement("label");
+const monthYearInput = document.createElement("input");
+
+const codeBox = document.createElement("div");
+const codeDescr = document.createElement("label");
+const codeInput = document.createElement("input");
+const codeSolution = document.createElement("div");
+
+const cardTypeBox = document.createElement("div");
+const cardTypeDescr = document.createElement("label");
+const cardTypeInput = document.createElement("form");
+const cardTypeDebet = document.createElement("input");
+const cardTypeCredit = document.createElement("input");
 
 const boxForForm = document.createElement("div");
 const boxControllForm = document.createElement("div");
+/*result form */
 
+const resultContentBox = document.createElement("div");
+const resultContentTitle = document.createElement("div");
+const resultContentForm = document.createElement("div");
+const resultContentCard = document.createElement("div");
+/*********************************** */
 
+const nextButonForm = document.createElement("div");
+const prevButtonForm = document.createElement("div");
+const backArrow = document.createElement("div");
+const textBack = document.createElement("div");
 /*For choise box*/
 const boxForChoise = document.createElement("div");
+
 for (let i = 0; i < 4; i++) {
   let buff = document.createElement("div");
   buff.classList.add("wrapChoise" + i);
@@ -179,19 +216,19 @@ for (let i = 0; i < 4; i++) {
 
 /*box for typical form */
 
-boxForTypeForm.classList.add('boxForTypeForm');
-boxTitleForm.classList.add('boxTitleForm');
-boxControllForm.classList.add('boxControllForm');
-boxForForm.classList.add('boxForForm');
-formTitle.classList.add('formTitle');
-formButtons.classList.add('formButtons');
-personalDate.classList.add('personalDate');
-personalDate.innerText = 'Личные данные';
-creditCartDate.classList.add('creditCartDate');
-creditCartDate.innerText = 'Данные кредитной карты';
-result.classList.add('result');
-result.innerText = 'Результат'
-h3.innerText = 'Типовая форма';
+boxForTypeForm.classList.add("boxForTypeForm");
+boxTitleForm.classList.add("boxTitleForm");
+boxControllForm.classList.add("boxControllForm");
+boxForForm.classList.add("boxForForm");
+formTitle.classList.add("formTitle");
+formButtons.classList.add("formButtons");
+personalDate.classList.add("personalDate");
+personalDate.innerText = "Личные данные";
+creditCartDate.classList.add("creditCartDate");
+creditCartDate.innerText = "Данные кредитной карты";
+result.classList.add("result");
+result.innerText = "Результат";
+h3.innerText = "Типовая форма";
 formTitle.appendChild(h3);
 boxTitleForm.appendChild(formTitle);
 boxTitleForm.appendChild(formButtons);
@@ -203,24 +240,85 @@ boxForTypeForm.appendChild(boxTitleForm);
 boxForTypeForm.appendChild(boxForForm);
 boxForTypeForm.appendChild(boxControllForm);
 /* credit cart */
+creditCardContentBox.classList.add("creditCardContentBox");
+creditCardContentTitle.classList.add("creditCardContentTitle");
+creditCardContentForm.classList.add("creditCardContentForm");
+creditCardContentTitle.innerText = "Все поля формы обязательны для заполнения";
+
+cardNumberBox.classList.add("cardNumberBox");
+cardNumberDescr.classList.add("cardNumberDescr");
+cardNumberInput.classList.add("cardNumberInput");
+cardNumberDescr.innerText = "Номер карты:";
+cardNumberBox.appendChild(cardNumberDescr);
+cardNumberBox.appendChild(cardNumberInput);
+creditCardContentForm.appendChild(cardNumberBox);
+
+monthYearBox.classList.add("monthYearBox");
+monthYearDescr.classList.add("monthYearDesc");
+monthYearInput.classList.add("monthYearInput");
+monthYearDescr.innerText = "Месяц/год:";
+monthYearBox.appendChild(monthYearDescr);
+monthYearBox.appendChild(monthYearInput);
+creditCardContentForm.appendChild(monthYearBox);
+
+codeBox.classList.add("codeBox");
+codeDescr.classList.add("codeDescr");
+codeInput.classList.add("codeInput");
+codeSolution.classList.add("codeSolution");
+codeDescr.innerText = "CVC2 или CVV2:";
+codeSolution.innerText = "3 цифры";
+codeBox.appendChild(codeDescr);
+codeBox.appendChild(codeInput);
+codeBox.appendChild(codeSolution);
+creditCardContentForm.appendChild(codeBox);
+
+cardTypeBox.classList.add("cardTypeBox");
+cardTypeDescr.classList.add("cardTypeDescr");
+cardTypeInput.classList.add("cardTypeInput");
+cardTypeDebet.classList.add("cardTypeDebet");
+cardTypeCredit.classList.add("cardTypeCredit");
+cardTypeDescr.innerText = "Тип карты:";
+Object.assign(cardTypeDebet, {
+  type: "radio",
+  name: "cardType",
+  value: "debet"
+});
+Object.assign(cardTypeCredit, {
+  type: "radio",
+  name: "cardType",
+  value: "credit"
+});
+cardTypeInput.appendChild(cardTypeDebet);
+cardTypeInput.appendChild(document.createTextNode("Дебетная"));
+cardTypeInput.appendChild(cardTypeCredit);
+cardTypeInput.appendChild(document.createTextNode("Кредитная"));
+cardTypeBox.appendChild(cardTypeDescr);
+cardTypeBox.appendChild(cardTypeInput);
+creditCardContentForm.appendChild(cardTypeBox);
+let cardFields = creditCardContentForm.children;
+addClass(cardFields, "formfields");
+
+creditCardContentBox.appendChild(creditCardContentTitle);
+creditCardContentBox.appendChild(creditCardContentForm);
 
 /*chat */
 
-chatBoxHead.classList.add('chatBoxHead');
-supportImg.classList.add('supportImg');
-supportDescription.classList.add('supportDescription');
-supportDescription.innerText = 'Анна в чате';
-greenPoint.classList.add('greenPoint');
-chatBoxMessageFieldBox.classList.add('chatBoxMessageFieldBox');
-chatBoxMessageField.classList.add('chatBoxMessageField');
-chatBoxFooter.classList.add('chatBoxFooter');
-inputMessage.classList.add('inputMessage');
-inputMessage.placeholder = 'Ваше сообщение ...';
-messageSubmit.classList.add('messageSubmit');
-annasMessageBox.classList.add('annasMessageBox');
-annasMessagePic.classList.add('annasMessagePic');
-annasMessageText.classList.add('annasMessageText');
-annasMessageText.innerText = 'Здравствуйте! Пишите мне, если у вас возникнут вопросы по работе сайта';
+chatBoxHead.classList.add("chatBoxHead");
+supportImg.classList.add("supportImg");
+supportDescription.classList.add("supportDescription");
+supportDescription.innerText = "Анна в чате";
+greenPoint.classList.add("greenPoint");
+chatBoxMessageFieldBox.classList.add("chatBoxMessageFieldBox");
+chatBoxMessageField.classList.add("chatBoxMessageField");
+chatBoxFooter.classList.add("chatBoxFooter");
+inputMessage.classList.add("inputMessage");
+inputMessage.placeholder = "Ваше сообщение ...";
+messageSubmit.classList.add("messageSubmit");
+annasMessageBox.classList.add("annasMessageBox");
+annasMessagePic.classList.add("annasMessagePic");
+annasMessageText.classList.add("annasMessageText");
+annasMessageText.innerText =
+  "Здравствуйте! Пишите мне, если у вас возникнут вопросы по работе сайта";
 annasMessageBox.appendChild(annasMessagePic);
 annasMessageBox.appendChild(annasMessageText);
 chatBoxHead.appendChild(supportImg);
@@ -232,145 +330,154 @@ chatBox.appendChild(chatBoxHead);
 chatBoxMessageFieldBox.appendChild(chatBoxMessageField);
 chatBox.appendChild(chatBoxMessageFieldBox);
 chatBox.appendChild(chatBoxFooter);
-usersMessageBox.classList.add('usersMessageBox');
-usersMessageText.classList.add('usersMessageText');
+usersMessageBox.classList.add("usersMessageBox");
+usersMessageText.classList.add("usersMessageText");
 usersMessageBox.appendChild(usersMessageText);
 
-
-setTimeout(()=> chatBoxMessageField.appendChild(annasMessageBox),  5000);
-function chattedClick (){
-  let messageBox = document.createElement('div'),
-      messageText = document.createElement('div'),
-      suppMessageBox = document.createElement('div'),
-      suppMessagePic = document.createElement('div'),
-      suppMessageText = document.createElement('div');
-  suppMessageBox.classList.add('annasMessageBox');
-  suppMessagePic.classList.add('annasMessagePic');
-  suppMessageText.classList.add('annasMessageText');   
+setTimeout(() => chatBoxMessageField.appendChild(annasMessageBox), 5000);
+function chattedClick() {
+  let messageBox = document.createElement("div"),
+    messageText = document.createElement("div"),
+    suppMessageBox = document.createElement("div"),
+    suppMessagePic = document.createElement("div"),
+    suppMessageText = document.createElement("div");
+  suppMessageBox.classList.add("annasMessageBox");
+  suppMessagePic.classList.add("annasMessagePic");
+  suppMessageText.classList.add("annasMessageText");
   suppMessageBox.appendChild(suppMessagePic);
-  suppMessageBox.appendChild(suppMessageText); 
+  suppMessageBox.appendChild(suppMessageText);
   suppMessageText.innerText = annasMessageText.innerText;
-  messageBox.classList.add('usersMessageBox');
-  messageText.classList.add('usersMessageText');
+  messageBox.classList.add("usersMessageBox");
+  messageText.classList.add("usersMessageText");
   messageBox.appendChild(messageText);
   if (inputMessage.value.length) {
     messageText.innerText = inputMessage.value;
     chatBoxMessageField.append(messageBox);
-    inputMessage.value = '';
-    setTimeout(()=> chatBoxMessageField.appendChild(suppMessageBox),  1000);
+    inputMessage.value = "";
+    setTimeout(() => chatBoxMessageField.appendChild(suppMessageBox), 1000);
   }
   console.log(inputMessage.value);
 }
-messageSubmit.addEventListener('click', chattedClick);
-
+messageSubmit.addEventListener("click", chattedClick);
 
 /** personal data */
-personalDateContentBox.classList.add('personalDateContentBox');
-personalDateContentTitle.classList.add('personalDateContentTitle');
-personalDateContentForm.classList.add('personalDateContentForm');
+personalDateContentBox.classList.add("personalDateContentBox");
+personalDateContentTitle.classList.add("personalDateContentTitle");
+personalDateContentForm.classList.add("personalDateContentForm");
 personalDateContentBox.appendChild(personalDateContentTitle);
 personalDateContentBox.appendChild(personalDateContentForm);
 boxForForm.appendChild(personalDateContentBox);
-personalDateContentTitle.innerText =  'Все поля формы обязательны для заполнения';
+boxForForm.appendChild(creditCardContentBox);
+personalDateContentTitle.innerText =
+  "Все поля формы обязательны для заполнения";
 
-userNameDescr.classList.add('userNameDescr');
-userNameBox.classList.add('userNameBox');
-userNameInput.classList.add('userNameInput');
+userNameDescr.classList.add("userNameDescr");
+userNameBox.classList.add("userNameBox");
+userNameInput.classList.add("userNameInput");
 
-userSurnameBox.classList.add('userSurnameBox')
-userSurnameDescr.classList.add('userSurnameDescr');
-userSurnameInput.classList.add('userSurnameInput');
+userSurnameBox.classList.add("userSurnameBox");
+userSurnameDescr.classList.add("userSurnameDescr");
+userSurnameInput.classList.add("userSurnameInput");
 
-userFatherBox.classList.add('userFatherBox');
-userFatherDescr.classList.add('userFatherDescr');
-userFatherInput.classList.add('userFatherInput');
+userFatherBox.classList.add("userFatherBox");
+userFatherDescr.classList.add("userFatherDescr");
+userFatherInput.classList.add("userFatherInput");
 
-userBirthdayBox.classList.add('userBirthdayBox');
-userBirthdayDescr.classList.add('userBirthdayDescr');
-userBirthdayInput.classList.add('userBirthdayInput');
-userBirthdayCalendar.classList.add('userBirthdayCalendar');
+userBirthdayBox.classList.add("userBirthdayBox");
+userBirthdayDescr.classList.add("userBirthdayDescr");
+userBirthdayInput.classList.add("userBirthdayInput");
+userBirthdayCalendar.classList.add("userBirthdayCalendar");
 
-userGenderBox.classList.add('userGenderBox');
-userGenderDescr.classList.add('userGenderDescr');
-userGenderInput.classList.add('userGenderInput');
-userGenderInputMale.classList.add('userGenderInputMale');
-userGenderInputFemale.classList.add('userGenderInputFemale');
+userGenderBox.classList.add("userGenderBox");
+userGenderDescr.classList.add("userGenderDescr");
+userGenderInput.classList.add("userGenderInput");
+userGenderInputMale.classList.add("userGenderInputMale");
+userGenderInputFemale.classList.add("userGenderInputFemale");
 
-userCountryBox.classList.add('userCountryBox');
-userCountryDescr.classList.add('userCountryDescr');
-userCountryInput.classList.add('userCountryInput');
-userCountryInputField.classList.add('userCountryInputField');
-userCountryInputDatalist.classList.add('userCountryInputDatalist');
+userCountryBox.classList.add("userCountryBox");
+userCountryDescr.classList.add("userCountryDescr");
+userCountryInput.classList.add("userCountryInput");
+userCountryInputField.classList.add("userCountryInputField");
+userCountryInputDatalist.classList.add("userCountryInputDatalist");
 
-userAdressBox.classList.add('userAdressBox');
-userAdressyDescr.classList.add('userAdressyDescr');
-userAdressInput.classList.add('userAdressInput');
-userAdressLink.classList.add('userAdressLink');
+userAdressBox.classList.add("userAdressBox");
+userAdressyDescr.classList.add("userAdressyDescr");
+userAdressInput.classList.add("userAdressInput");
+userAdressLink.classList.add("userAdressLink");
 
-userMotherBox.classList.add('userMotherBox');
-userMotherDescr.classList.add('userMotherDescr');
-userMotherInput.classList.add('userMotherInput');
+userMotherBox.classList.add("userMotherBox");
+userMotherDescr.classList.add("userMotherDescr");
+userMotherInput.classList.add("userMotherInput");
 
-userBankBox.classList.add('userBankBox');
-userBankDescr.classList.add('userBankDescr');
-userBankInput.classList.add('userBankInput');
+userBankBox.classList.add("userBankBox");
+userBankDescr.classList.add("userBankDescr");
+userBankInput.classList.add("userBankInput");
 
-userSourceBox.classList.add('userSourceBox');
-userSourceDescr.classList.add('userSourceDescr');
-userSourceInput.classList.add('userSourceInput');
-userSourceSoluthion.classList.add('userSourceSoluthion');
+userSourceBox.classList.add("userSourceBox");
+userSourceDescr.classList.add("userSourceDescr");
+userSourceInput.classList.add("userSourceInput");
+userSourceSoluthion.classList.add("userSourceSoluthion");
 
-userFriendBox.classList.add('userFriendBox');
-userFriendDescr.classList.add('userFriendDescr');
-userFriendInput.classList.add('userFriendInput');
+userFriendBox.classList.add("userFriendBox");
+userFriendDescr.classList.add("userFriendDescr");
+userFriendInput.classList.add("userFriendInput");
 
-userTelBox.classList.add('userTelBox');
-userTelDescr.classList.add('userTelDescr');
-userTelInput.classList.add('userTelInput');
-userTelSoluthion.classList.add('userTelSoluthion');
+userTelBox.classList.add("userTelBox");
+userTelDescr.classList.add("userTelDescr");
+userTelInput.classList.add("userTelInput");
+userTelSoluthion.classList.add("userTelSoluthion");
 
-userFootballBox.classList.add('userFootballBox');
-userFootballDescr.classList.add('userFootballDescr');
-userFootballInput.classList.add('userFootballInput');
+userFootballBox.classList.add("userFootballBox");
+userFootballDescr.classList.add("userFootballDescr");
+userFootballInput.classList.add("userFootballInput");
 /*------------------ */
-userNameDescr.innerText = 'Имя:';
+userNameDescr.innerText = "Имя:";
 userNameBox.appendChild(userNameDescr);
 userNameBox.appendChild(userNameInput);
 
 userSurnameBox.appendChild(userSurnameDescr);
-userSurnameDescr.innerText = 'Фамилия:';
+userSurnameDescr.innerText = "Фамилия:";
 userSurnameBox.appendChild(userSurnameInput);
 
 userFatherBox.appendChild(userFatherDescr);
 userFatherBox.appendChild(userFatherInput);
-userFatherDescr.innerText = 'Отчество:';
+userFatherDescr.innerText = "Отчество:";
 
 userBirthdayBox.appendChild(userBirthdayDescr);
 userBirthdayBox.appendChild(userBirthdayInput);
 userBirthdayBox.appendChild(userBirthdayCalendar);
-userBirthdayDescr.innerText = 'Дата рождения:';
+userBirthdayDescr.innerText = "Дата рождения:";
 
 userGenderBox.appendChild(userGenderDescr);
 userGenderBox.appendChild(userGenderInput);
 userGenderInput.appendChild(userGenderInputMale);
-userGenderInput.appendChild(document.createTextNode('Мужской'));
+userGenderInput.appendChild(document.createTextNode("Мужской"));
 userGenderInput.appendChild(userGenderInputFemale);
-userGenderInput.appendChild(document.createTextNode('Женский'));
-userGenderInputFemale.innerText = 'Женский';
-userGenderInputMale.innerText = 'Мужской';
-Object.assign(userGenderInputMale, {type: 'radio', name: 'sex', value: 'Male', checked: true});
-Object.assign(userGenderInputFemale, {type: 'radio', name: 'sex', value: 'Female'});
-userGenderDescr.innerText = 'Пол:';
+userGenderInput.appendChild(document.createTextNode("Женский"));
+userGenderInputFemale.innerText = "Женский";
+userGenderInputMale.innerText = "Мужской";
+Object.assign(userGenderInputMale, {
+  type: "radio",
+  name: "sex",
+  value: "Male",
+  checked: true
+});
+Object.assign(userGenderInputFemale, {
+  type: "radio",
+  name: "sex",
+  value: "Female"
+});
+userGenderDescr.innerText = "Пол:";
 userCountryBox.appendChild(userCountryDescr);
 userCountryBox.appendChild(userCountryInput);
-userCountryDescr.innerText = 'Страна проживания:';
+userCountryDescr.innerText = "Страна проживания:";
 userCountryInput.appendChild(userCountryInputField);
 userCountryInput.appendChild(userCountryInputDatalist);
-userCountryInputField.setAttribute('list','Countryes' );
-userCountryInputDatalist.id = 'Countryes';
-let countryes = ['Беларусь', 'Казахстан', 'Россия', 'Украина'];
-for(let i = 0; i < 4; i++) {
-  let country = document.createElement('option');
+userCountryInputField.setAttribute("list", "Countryes");
+userCountryInputDatalist.id = "Countryes";
+let countryes = ["Беларусь", "Казахстан", "Россия", "Украина"];
+for (let i = 0; i < 4; i++) {
+  let country = document.createElement("option");
   country.innerText = countryes[i];
   userCountryInputDatalist.appendChild(country);
 }
@@ -378,38 +485,39 @@ for(let i = 0; i < 4; i++) {
 userAdressBox.appendChild(userAdressyDescr);
 userAdressBox.appendChild(userAdressInput);
 userAdressBox.appendChild(userAdressLink);
-userAdressLink.innerHTML = '<a href="https://www.b2b.by/info/post_indexes.html">Узнать индекс</a>';
-userAdressyDescr.innerText = 'Адрес, почтовый индекс:';
+userAdressLink.innerHTML =
+  '<a href="https://www.b2b.by/info/post_indexes.html">Узнать индекс</a>';
+userAdressyDescr.innerText = "Адрес, почтовый индекс:";
 
 userMotherBox.appendChild(userMotherDescr);
 userMotherBox.appendChild(userMotherInput);
-userMotherDescr.innerText = 'Девичья фамилия матери:';
+userMotherDescr.innerText = "Девичья фамилия матери:";
 
 userBankBox.appendChild(userBankDescr);
 userBankBox.appendChild(userBankInput);
-userBankDescr.innerText = 'Кодовое слово в вашем банке:';
+userBankDescr.innerText = "Кодовое слово в вашем банке:";
 
 userSourceBox.appendChild(userSourceDescr);
 userSourceBox.appendChild(userSourceInput);
-userSourceDescr.innerText = 'Как вы узнали о нашем сайте:';
-userSourceSoluthion.innerText = 'Из газет, телевидения, радио или проч.';
+userSourceDescr.innerText = "Как вы узнали о нашем сайте:";
+userSourceSoluthion.innerText = "Из газет, телевидения, радио или проч.";
 
 userFriendBox.appendChild(userFriendDescr);
 userFriendBox.appendChild(userFriendInput);
-userFriendDescr.innerText = 'Email друга:';
+userFriendDescr.innerText = "Email друга:";
 userTelBox.appendChild(userTelDescr);
 userTelBox.appendChild(userTelInput);
-function isMale(){
+function isMale() {
   if (userGenderInputFemale.checked) {
-    userTelBox.innerText = 'Номер телефона вашего парня:';
+    userTelBox.innerText = "Номер телефона вашего парня:";
   } else {
-    userTelBox.innerText = 'Номер телефона вашей девушки';
+    userTelBox.innerText = "Номер телефона вашей девушки";
   }
 }
 isMale();
 userFootballBox.appendChild(userFootballDescr);
 userFootballBox.appendChild(userFootballInput);
-userFootballDescr.innerText = 'Ваша любимая команда';
+userFootballDescr.innerText = "Ваша любимая команда";
 /******************************* */
 
 personalDateContentForm.appendChild(userNameBox);
@@ -426,9 +534,94 @@ personalDateContentForm.appendChild(userFriendBox);
 personalDateContentForm.appendChild(userTelBox);
 personalDateContentForm.appendChild(userFootballBox);
 formFields = personalDateContentForm.childNodes;
-for(let i = 0, len = formFields.length; i < len; i++){
-  formFields[i].classList.add('formfields');
+addClass(formFields, "formfields");
+
+/* ************************RESULT******************/
+resultContentBox.classList.add("resultContentBox");
+resultContentTitle.classList.add("resultContentTitle");
+resultContentForm.classList.add("resultContentForm");
+resultContentCard.classList.add("resultContentCard");
+
+resultContentTitle.innerText = "Результат";
+resultContentBox.appendChild(resultContentTitle);
+resultContentBox.appendChild(resultContentForm);
+resultContentBox.appendChild(resultContentCard);
+boxForForm.appendChild(resultContentBox);
+/* ----------------function switch tab-menu------------------- */
+nextButonForm.classList.add("nextButonForm");
+prevButtonForm.classList.add("prevButtonForm");
+prevButtonForm.appendChild(backArrow);
+prevButtonForm.appendChild(textBack);
+textBack.classList.add("textBack");
+backArrow.classList.add("backArrow");
+textBack.innerText = "Данные кредитной карты";
+
+nextButonForm.innerText = "Далее";
+
+boxControllForm.appendChild(prevButtonForm);
+boxControllForm.appendChild(nextButonForm);
+
+let formButtonsMass = formButtons.children;
+let forms = boxForForm.children;
+addClass(formButtonsMass, "buttonControl");
+addClass(forms, "forms");
+forms[0].style.display = "block";
+formButtonsMass[0].classList.add("active");
+
+let stateTab = 0;
+
+function changeTab() {
+  nextButonForm.addEventListener("click", tabsNext);
+  prevButtonForm.addEventListener("click", tabPrev);
+  function tabsNext() {
+    
+    if (stateTab < 2) {
+      forms[stateTab + 1].style.display = "block";
+      if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
+        formButtonsMass[stateTab + 1].classList.add("active");
+      }
+      for (j = 0; j < 3; j++) {
+        if (j != stateTab + 1) {
+          forms[j].style.display = "none";
+          formButtonsMass[j].classList.remove("active");
+        }
+      }
+      stateTab += 1;
+    }
+    if(stateTab === 1 ) {
+      prevButtonForm.style.display = 'flex';
+      textBack.innerText = 'Личные данные';
+    }
+    if(stateTab === 2 ) {
+      prevButtonForm.style.display = 'flex';
+      textBack.innerText = 'Данные кредитной карты';
+    }
+  }
+  function tabPrev() {
+    if(stateTab > 0) {
+      forms[stateTab - 1].style.display = "block";
+      if (!formButtonsMass[stateTab - 1].classList.contains("active")) {
+        formButtonsMass[stateTab - 1].classList.add("active");
+      }
+      for (j = 0; j < 3; j++) {
+        if (j != stateTab - 1) {
+          forms[j].style.display = "none";
+          formButtonsMass[j].classList.remove("active");
+        }
+      }
+      stateTab -= 1;
+    }
+    if(stateTab === 1 ) {
+      prevButtonForm.style.display = 'flex';
+      textBack.innerText = 'Личные данные';
+    }
+    if(stateTab === 0 ) {
+      prevButtonForm.style.display = 'none';
+      
+    }
+  }
 }
+changeTab();
 
 /*add some styles */
 
@@ -444,7 +637,7 @@ footerMenuBox.classList.add("footerMenuBox");
 title.appendChild(h1);
 titleBox.appendChild(title);
 madeIn.innerText = "Сделано в Беларуси";
-chatBox.classList.add('chatBox');
+chatBox.classList.add("chatBox");
 const formPartials = (arr, quant, box) => {
   let buffMass = [];
   for (let i = 0; i < quant; i++) {
@@ -460,14 +653,6 @@ const customizeMenu = (arrButtons, arrNames, addClass) => {
     arrButtons[i].innerText = arrNames[i];
     if (addClass) arrButtons[i].classList.add(addClass);
   }
-};
-const addClass = (element, classes) => {
-  let len = element.length;
-  if (len) {
-    for (let i = 0; i < len; i++) {
-      element[i].classList.add(classes);
-    }
-  } else element.classList.add(classes);
 };
 
 const removeClass = (element, classes) => {
@@ -518,10 +703,6 @@ const swithContent = i => {
 contentBox[3].appendChild(boxForChoise);
 contentBox[3].appendChild(boxForTypeForm);
 contentBox[3].appendChild(chatBox);
-
-
-
-
 
 topMenuBox.appendChild(mainMenuButtonBox);
 footerBox.appendChild(footerMenuBox);
