@@ -76,7 +76,7 @@ const userBirthdayCalendar = document.createElement("div");
 
 const userGenderBox = document.createElement("div");
 const userGenderDescr = document.createElement("label");
-const userGenderInput = document.createElement("div");
+const userGenderInput = document.createElement("form");
 const userGenderInputMale = document.createElement("input");
 const userGenderInputFemale = document.createElement("input");
 
@@ -110,14 +110,15 @@ const userFriendInput = document.createElement("input");
 
 const userTelBox = document.createElement("div");
 const userTelDescr = document.createElement("label");
-const userTelInput = document.createElement("textarea");
+const userTelInput = document.createElement("input");
 const userTelSoluthion = document.createElement("label");
 
 const userFootballBox = document.createElement("div");
 const userFootballDescr = document.createElement("label");
-const userFootballInput = document.createElement("textarea");
-
-let formFields = [];
+const userFootballInput = document.createElement("form");
+const userFootballInputField = document.createElement("input");
+const userFootballInputDatalist = document.createElement("datalist");
+let formFields = personalDateContentForm.childNodes;
 
 /*credit card consts */
 const creditCardContentBox = document.createElement("div");
@@ -214,6 +215,23 @@ for (let i = 0; i < 4; i++) {
   boxForChoise.appendChild(buff);
 }
 
+let nextButton = document.querySelector(".nextButton");
+
+function clickNext(event) {
+  if (event.target.classList.contains("nextButton")) {
+    let form = document.querySelectorAll('[name = "userChoise"]');
+    if (form[0].checked) {
+      boxForChoise.style.display = "none";
+      chatBox.style.display = "block";
+      boxForTypeForm.style.display = "block";
+    } else {
+      console.log("mass");
+    }
+  }
+}
+
+document.body.addEventListener("click", clickNext);
+
 /*box for typical form */
 
 boxForTypeForm.classList.add("boxForTypeForm");
@@ -247,6 +265,7 @@ creditCardContentTitle.innerText = "Все поля формы обязател�
 
 cardNumberBox.classList.add("cardNumberBox");
 cardNumberDescr.classList.add("cardNumberDescr");
+cardNumberDescr.classList.add("cardDescr");
 cardNumberInput.classList.add("cardNumberInput");
 cardNumberDescr.innerText = "Номер карты:";
 cardNumberBox.appendChild(cardNumberDescr);
@@ -255,6 +274,7 @@ creditCardContentForm.appendChild(cardNumberBox);
 
 monthYearBox.classList.add("monthYearBox");
 monthYearDescr.classList.add("monthYearDesc");
+monthYearDescr.classList.add("cardDescr");
 monthYearInput.classList.add("monthYearInput");
 monthYearDescr.innerText = "Месяц/год:";
 monthYearBox.appendChild(monthYearDescr);
@@ -263,6 +283,7 @@ creditCardContentForm.appendChild(monthYearBox);
 
 codeBox.classList.add("codeBox");
 codeDescr.classList.add("codeDescr");
+codeDescr.classList.add("cardDescr");
 codeInput.classList.add("codeInput");
 codeSolution.classList.add("codeSolution");
 codeDescr.innerText = "CVC2 или CVV2:";
@@ -274,9 +295,12 @@ creditCardContentForm.appendChild(codeBox);
 
 cardTypeBox.classList.add("cardTypeBox");
 cardTypeDescr.classList.add("cardTypeDescr");
+cardTypeDescr.classList.add("cardDescr");
 cardTypeInput.classList.add("cardTypeInput");
 cardTypeDebet.classList.add("cardTypeDebet");
+
 cardTypeCredit.classList.add("cardTypeCredit");
+
 cardTypeDescr.innerText = "Тип карты:";
 Object.assign(cardTypeDebet, {
   type: "radio",
@@ -430,6 +454,8 @@ userTelSoluthion.classList.add("userTelSoluthion");
 userFootballBox.classList.add("userFootballBox");
 userFootballDescr.classList.add("userFootballDescr");
 userFootballInput.classList.add("userFootballInput");
+userFootballInputField.classList.add("userFootballInputField");
+userFootballInputDatalist.classList.add("userFootballInputDatalist");
 /*------------------ */
 userNameDescr.innerText = "Имя:";
 userNameBox.appendChild(userNameDescr);
@@ -447,6 +473,7 @@ userBirthdayBox.appendChild(userBirthdayDescr);
 userBirthdayBox.appendChild(userBirthdayInput);
 userBirthdayBox.appendChild(userBirthdayCalendar);
 userBirthdayDescr.innerText = "Дата рождения:";
+userBirthdayInput.type = "text";
 
 userGenderBox.appendChild(userGenderDescr);
 userGenderBox.appendChild(userGenderInput);
@@ -481,7 +508,8 @@ for (let i = 0; i < 4; i++) {
   country.innerText = countryes[i];
   userCountryInputDatalist.appendChild(country);
 }
-
+userGenderInputFemale.style.width = "50px";
+userGenderInputMale.style.width = "50px";
 userAdressBox.appendChild(userAdressyDescr);
 userAdressBox.appendChild(userAdressInput);
 userAdressBox.appendChild(userAdressLink);
@@ -499,6 +527,7 @@ userBankDescr.innerText = "Кодовое слово в вашем банке:";
 
 userSourceBox.appendChild(userSourceDescr);
 userSourceBox.appendChild(userSourceInput);
+userSourceBox.appendChild(userSourceSoluthion);
 userSourceDescr.innerText = "Как вы узнали о нашем сайте:";
 userSourceSoluthion.innerText = "Из газет, телевидения, радио или проч.";
 
@@ -506,18 +535,35 @@ userFriendBox.appendChild(userFriendDescr);
 userFriendBox.appendChild(userFriendInput);
 userFriendDescr.innerText = "Email друга:";
 userTelBox.appendChild(userTelDescr);
+userTelInput.style.paddingLeft = '25px';
+userTelInput.style.width = '225px';
 userTelBox.appendChild(userTelInput);
-function isMale() {
-  if (userGenderInputFemale.checked) {
-    userTelBox.innerText = "Номер телефона вашего парня:";
-  } else {
-    userTelBox.innerText = "Номер телефона вашей девушки";
-  }
-}
-isMale();
+userTelDescr.innerText = "Телефон вашей девушки:";
+
+
 userFootballBox.appendChild(userFootballDescr);
 userFootballBox.appendChild(userFootballInput);
-userFootballDescr.innerText = "Ваша любимая команда";
+userFootballDescr.innerText = "Ваша любимая футбольная команда:";
+
+userFootballInput.appendChild(userFootballInputField);
+userFootballInput.appendChild(userFootballInputDatalist);
+
+userFootballInputField.setAttribute("list", "Teams");
+userFootballInputDatalist.id = "Teams";
+let teams = ["Спартак", "Зенит", "ФК Гомель", "Динамо"];
+let pans = ['Rondell', 'Tefal', 'Neva', 'Berghoff'];
+function setPreset(arr) {
+  userFootballInputDatalist.innerText = '';
+  for (let i = 0; i < 4; i++) {
+    
+    let team = document.createElement("option");
+    team.innerText = arr[i];
+    userFootballInputDatalist.appendChild(team);
+  }
+}
+setPreset(teams);
+
+
 /******************************* */
 
 personalDateContentForm.appendChild(userNameBox);
@@ -533,8 +579,60 @@ personalDateContentForm.appendChild(userSourceBox);
 personalDateContentForm.appendChild(userFriendBox);
 personalDateContentForm.appendChild(userTelBox);
 personalDateContentForm.appendChild(userFootballBox);
-formFields = personalDateContentForm.childNodes;
 addClass(formFields, "formfields");
+for (let i = 0, len = formFields.length; i < len; i++) {
+  addClass(formFields[i].firstChild, "descriptionFields");
+}
+let userData = [];
+function makeArray() {
+  let flag = true;
+  for (let i = 0, len = formFields.length; i < len; i++) {
+    userData[i] = formFields[i].childNodes[1].value;
+    if (i === 4) {
+      if (formFields[i].childNodes[1].childNodes[0].checked) {
+        userData[i] = "male";
+        console.log("male");
+      } else {
+        userData[i] = "female";
+        console.log("female");
+      }
+    }
+    if (i === 5) {
+      userData[i] = formFields[i].childNodes[1].childNodes[0].value;
+    }
+    if (i === 12) {
+      userData[i] = formFields[i].childNodes[1].childNodes[0].value;
+    }
+  }
+  return userData;
+}
+function changeSex () {
+  if (formFields[4].childNodes[1].childNodes[0].checked) {
+    userTelDescr.innerText = 'Телефон вашей девушки:';
+    userFootballDescr.innerText = 'Ваша любимая футбольная команда:';
+    setPreset(teams);
+  } else {
+    userTelDescr.innerText = 'Телефон вашего парня:';
+    userFootballDescr.innerText = 'Какую сковороду предпочитаете:';
+    setPreset(pans);
+  }
+}
+
+
+
+formFields[4].childNodes[1].addEventListener('change', changeSex);
+
+
+
+function isTelBel(event) {
+  if (userTelInput.value.slice(0, 4) == "+375") {
+    console.log("Bel");
+    return true;
+  }
+  return false;
+}
+
+document.body.addEventListener("click", () => console.log('click'));
 
 /* ************************RESULT******************/
 resultContentBox.classList.add("resultContentBox");
@@ -574,7 +672,6 @@ function changeTab() {
   nextButonForm.addEventListener("click", tabsNext);
   prevButtonForm.addEventListener("click", tabPrev);
   function tabsNext() {
-    
     if (stateTab < 2) {
       forms[stateTab + 1].style.display = "block";
       if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
@@ -588,17 +685,17 @@ function changeTab() {
       }
       stateTab += 1;
     }
-    if(stateTab === 1 ) {
-      prevButtonForm.style.display = 'flex';
-      textBack.innerText = 'Личные данные';
+    if (stateTab === 1) {
+      prevButtonForm.style.display = "flex";
+      textBack.innerText = "Личные данные";
     }
-    if(stateTab === 2 ) {
-      prevButtonForm.style.display = 'flex';
-      textBack.innerText = 'Данные кредитной карты';
+    if (stateTab === 2) {
+      prevButtonForm.style.display = "flex";
+      textBack.innerText = "Данные кредитной карты";
     }
   }
   function tabPrev() {
-    if(stateTab > 0) {
+    if (stateTab > 0) {
       forms[stateTab - 1].style.display = "block";
       if (!formButtonsMass[stateTab - 1].classList.contains("active")) {
         formButtonsMass[stateTab - 1].classList.add("active");
@@ -611,13 +708,12 @@ function changeTab() {
       }
       stateTab -= 1;
     }
-    if(stateTab === 1 ) {
-      prevButtonForm.style.display = 'flex';
-      textBack.innerText = 'Личные данные';
+    if (stateTab === 1) {
+      prevButtonForm.style.display = "flex";
+      textBack.innerText = "Личные данные";
     }
-    if(stateTab === 0 ) {
-      prevButtonForm.style.display = 'none';
-      
+    if (stateTab === 0) {
+      prevButtonForm.style.display = "none";
     }
   }
 }
@@ -676,6 +772,11 @@ const createContent = (arr, num, box) => {
 let state = 0;
 
 topMenuBox.appendChild(titleBox);
+
+$(function() {
+  $(".userBirthdayInput").datepicker();
+});
+
 formPartials(mainMenu, quantButtonsTop, mainMenuButtonBox);
 customizeMenu(mainMenu, mainMenuText, "topMenuButton");
 formPartials(footerMenu, quantButtonsFooter, footerMenuBox);
