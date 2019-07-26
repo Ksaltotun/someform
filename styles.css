@@ -260,6 +260,10 @@ body {
     background-position-y: center;
      
 }
+.alertMesage{
+    color: red;
+    margin-left: 20em;
+}
 /*------------------------------------*/
 .creditCardContentBox{
     height: 100%;

@@ -118,6 +118,7 @@ const userFootballDescr = document.createElement("label");
 const userFootballInput = document.createElement("form");
 const userFootballInputField = document.createElement("input");
 const userFootballInputDatalist = document.createElement("datalist");
+const alertMesage = document.createElement("span");
 let formFields = personalDateContentForm.childNodes;
 
 /*credit card consts */
@@ -385,6 +386,8 @@ function chattedClick() {
 messageSubmit.addEventListener("click", chattedClick);
 
 /** personal data */
+alertMesage.classList.add("alertMesage");
+alertMesage.innerText = "Это поле заполнено неправильно!";
 personalDateContentBox.classList.add("personalDateContentBox");
 personalDateContentTitle.classList.add("personalDateContentTitle");
 personalDateContentForm.classList.add("personalDateContentForm");
@@ -535,11 +538,10 @@ userFriendBox.appendChild(userFriendDescr);
 userFriendBox.appendChild(userFriendInput);
 userFriendDescr.innerText = "Email друга:";
 userTelBox.appendChild(userTelDescr);
-userTelInput.style.paddingLeft = '25px';
-userTelInput.style.width = '225px';
+userTelInput.style.paddingLeft = "25px";
+userTelInput.style.width = "225px";
 userTelBox.appendChild(userTelInput);
 userTelDescr.innerText = "Телефон вашей девушки:";
-
 
 userFootballBox.appendChild(userFootballDescr);
 userFootballBox.appendChild(userFootballInput);
@@ -551,18 +553,16 @@ userFootballInput.appendChild(userFootballInputDatalist);
 userFootballInputField.setAttribute("list", "Teams");
 userFootballInputDatalist.id = "Teams";
 let teams = ["Спартак", "Зенит", "ФК Гомель", "Динамо"];
-let pans = ['Rondell', 'Tefal', 'Neva', 'Berghoff'];
+let pans = ["Rondell", "Tefal", "Neva", "Berghoff"];
 function setPreset(arr) {
-  userFootballInputDatalist.innerText = '';
+  userFootballInputDatalist.innerText = "";
   for (let i = 0; i < 4; i++) {
-    
     let team = document.createElement("option");
     team.innerText = arr[i];
     userFootballInputDatalist.appendChild(team);
   }
 }
 setPreset(teams);
-
 
 /******************************* */
 
@@ -585,54 +585,64 @@ for (let i = 0, len = formFields.length; i < len; i++) {
 }
 let userData = [];
 function makeArray() {
-  let flag = true;
-  for (let i = 0, len = formFields.length; i < len; i++) {
-    userData[i] = formFields[i].childNodes[1].value;
-    if (i === 4) {
-      if (formFields[i].childNodes[1].childNodes[0].checked) {
-        userData[i] = "male";
-        console.log("male");
-      } else {
-        userData[i] = "female";
-        console.log("female");
+  userData = [];
+  for (let i in formFields) {
+    if (!isNaN(i) && formFields[i].classList) {
+      if (formFields[i].classList.contains("userGenderBox")) {
+        if (formFields[i].childNodes[1].childNodes[0].checked) {
+          userData.push("male");
+        } else {
+          userData.push("female");
+        }
+      }
+      if (formFields[i].classList.contains("userCountryBox")) {
+        userData.push(formFields[i].childNodes[1].childNodes[0].value);
+      }
+      if (formFields[i].classList.contains("userFootballBox")) {
+        userData.push(formFields[i].childNodes[1].childNodes[0].value);
+      }
+      if (formFields[i].childNodes[1] != undefined) {
+        if (formFields[i].childNodes[1].value != undefined) {
+          userData.push(formFields[i].childNodes[1].value);
+        }
       }
     }
-    if (i === 5) {
-      userData[i] = formFields[i].childNodes[1].childNodes[0].value;
-    }
-    if (i === 12) {
-      userData[i] = formFields[i].childNodes[1].childNodes[0].value;
-    }
   }
-  return userData;
+  console.log(userData);
 }
-function changeSex () {
+
+function changeSex() {
   if (formFields[4].childNodes[1].childNodes[0].checked) {
-    userTelDescr.innerText = 'Телефон вашей девушки:';
-    userFootballDescr.innerText = 'Ваша любимая футбольная команда:';
+    userTelDescr.innerText = "Телефон вашей девушки:";
+    userFootballDescr.innerText = "Ваша любимая футбольная команда:";
     setPreset(teams);
   } else {
-    userTelDescr.innerText = 'Телефон вашего парня:';
-    userFootballDescr.innerText = 'Какую сковороду предпочитаете:';
+    userTelDescr.innerText = "Телефон вашего парня:";
+    userFootballDescr.innerText = "Какую сковороду предпочитаете:";
     setPreset(pans);
   }
 }
 
-
-
-formFields[4].childNodes[1].addEventListener('change', changeSex);
-
-
+formFields[4].childNodes[1].addEventListener("change", changeSex);
+let regNumber = /[0-9]/;
 
 function isTelBel(event) {
-  if (userTelInput.value.slice(0, 4) == "+375") {
-    console.log("Bel");
-    return true;
+  
+  if ((userTelInput.value.slice(0, 4) == "+375") && regNumber.test(userTelInput.value.slice(1,userTelInput.value.length))) {
+    
+    userTelInput.style.borderColor = "#a7a7a7";
+    alertMesage.remove;
+    userTelInput.style.backgroundImage = "url(./images/bel-flag.png)";
+    return 'bel';
+  } else if ((userTelInput.value.slice(0, 1) == "+") && regNumber.test(userTelInput.value.slice(1,userTelInput.value.length))) {
+    userTelInput.style.borderColor = "#a7a7a7";
+    alertMesage.remove;
+    userTelInput.style.backgroundImage = "url(./images/world-flag.png)";
+    return 'import';
   }
+  userTelInput.style.borderColor = "red";
   return false;
 }
-
-document.body.addEventListener("click", () => console.log('click'));
 
 /* ************************RESULT******************/
 resultContentBox.classList.add("resultContentBox");
@@ -665,35 +675,142 @@ addClass(formButtonsMass, "buttonControl");
 addClass(forms, "forms");
 forms[0].style.display = "block";
 formButtonsMass[0].classList.add("active");
+function checkName (name) {
+  let reg = /[A-Za-zА-Яа-я]/
+  if (reg.test(name)) return true;
+  return false; 
+}
+let regDate = /[0-9]\//;
+function checkDate (date){
+  if(regDate.test(date)) return true;
+  return false;
+}
+
+let inputs = [];
+function makeInputs() {
+  for (let i = 0, len = formFields.length; i < len; i++) {
+    if (i === 4) {
+      inputs[i] = 'sex';
+    } else if (i === 5) {
+      inputs[i] = formFields[i].childNodes[1].childNodes[0];
+    } else if (i === 12) {
+      inputs[i] = formFields[i].childNodes[1].childNodes[0];
+    } else {
+      inputs[i] = formFields[i].childNodes[1];
+    }
+  }
+}
+makeInputs();
+
 
 let stateTab = 0;
+let regEmail =  /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+function isTru(arr) {
+  for (let i = 0, len = arr.length; i < len; i++) {
+    if(i < 3) {
+      if (!checkName(arr[i])){
+        personalDateContentForm.insertBefore(alertMesage, formFields[i]);
+        inputs[i].style.borderColor = 'red';
+        return false;
+      } else {
+        if(personalDateContentForm.hasChildNodes(alertMesage)){
+          alertMesage.remove();
+        }
+        inputs[i].style.borderColor = '#a7a7a7';
+      }
+    }
+    if (i === 3) {
+      if (!checkDate(arr[i])){
+        personalDateContentForm.insertBefore(alertMesage, formFields[i]);
+        inputs[i].style.borderColor = 'red';
+        return false;
+      } else {
+        if(personalDateContentForm.hasChildNodes(alertMesage)){
+          alertMesage.remove();
+        }
+        inputs[i].style.borderColor = '#a7a7a7';
+      }
+
+    }
+   
+    if (arr[4] === 'male') {
+      if (isTelBel() != 'bel') {
+        personalDateContentForm.insertBefore(alertMesage, userTelBox);
+        return false;
+      }
+    } else if (arr[4] === 'female') {
+      if (isTelBel() === 'import') {
+        userFootballInputField.placeholder = 'Tefal';
+        userFootballInputField.disabled = true;
+      } else if (isTelBel() === 'bel') {
+        userFootballInputField.disabled = false;
+        setPreset(pans);
+      }
+    }
+    if (i > 4 && i < 10 || i === 11)  {
+      if (!arr[i]){
+        personalDateContentForm.insertBefore(alertMesage, formFields[i]);
+        inputs[i].style.borderColor = 'red';
+        return false;
+      } else {
+        if(personalDateContentForm.hasChildNodes(alertMesage)){
+          alertMesage.remove();
+        }
+        inputs[i].style.borderColor = '#a7a7a7';
+      }
+    }
+
+    if(i === 10) {
+      
+      if(!regEmail.test(arr[i])) {
+        console.log(false);
+        personalDateContentForm.insertBefore(alertMesage, userFriendBox);
+        userFriendInput.style.borderColor = 'red';
+        return false;
+      } else {
+        if(personalDateContentForm.hasChildNodes(alertMesage)){
+          alertMesage.remove();
+        }
+        
+        userFriendInput.style.borderColor = '#a7a7a7';
+      }
+    }
+   
+  }
+
+  return true;
+}
 
 function changeTab() {
   nextButonForm.addEventListener("click", tabsNext);
   prevButtonForm.addEventListener("click", tabPrev);
   function tabsNext() {
-    if (stateTab < 2) {
-      forms[stateTab + 1].style.display = "block";
-      if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
-        formButtonsMass[stateTab + 1].classList.add("active");
-      }
-      for (j = 0; j < 3; j++) {
-        if (j != stateTab + 1) {
-          forms[j].style.display = "none";
-          formButtonsMass[j].classList.remove("active");
+    makeArray();
+    if (isTru(userData)) {
+      if (stateTab < 2) {
+        forms[stateTab + 1].style.display = "block";
+        if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
+          formButtonsMass[stateTab + 1].classList.add("active");
         }
+        for (j = 0; j < 3; j++) {
+          if (j != stateTab + 1) {
+            forms[j].style.display = "none";
+            formButtonsMass[j].classList.remove("active");
+          }
+        }
+        stateTab += 1;
       }
-      stateTab += 1;
-    }
-    if (stateTab === 1) {
-      prevButtonForm.style.display = "flex";
-      textBack.innerText = "Личные данные";
-    }
-    if (stateTab === 2) {
-      prevButtonForm.style.display = "flex";
-      textBack.innerText = "Данные кредитной карты";
+      if (stateTab === 1) {
+        prevButtonForm.style.display = "flex";
+        textBack.innerText = "Личные данные";
+      }
+      if (stateTab === 2) {
+        prevButtonForm.style.display = "flex";
+        textBack.innerText = "Данные кредитной карты";
+      }
     }
   }
+
   function tabPrev() {
     if (stateTab > 0) {
       forms[stateTab - 1].style.display = "block";
@@ -772,10 +889,10 @@ const createContent = (arr, num, box) => {
 let state = 0;
 
 topMenuBox.appendChild(titleBox);
-
-$(function() {
+userBirthdayInput.addEventListener('click', $(function() {
   $(".userBirthdayInput").datepicker();
-});
+}))
+
 
 formPartials(mainMenu, quantButtonsTop, mainMenuButtonBox);
 customizeMenu(mainMenu, mainMenuText, "topMenuButton");
