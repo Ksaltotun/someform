@@ -161,6 +161,8 @@ const backArrow = document.createElement("div");
 const textBack = document.createElement("div");
 /*For choise box*/
 const boxForChoise = document.createElement("div");
+let regNumber = /[0-9]/;
+let regDate = /^[0-9-/]*$/;
 
 for (let i = 0; i < 4; i++) {
   let buff = document.createElement("div");
@@ -286,6 +288,8 @@ codeBox.classList.add("codeBox");
 codeDescr.classList.add("codeDescr");
 codeDescr.classList.add("cardDescr");
 codeInput.classList.add("codeInput");
+codeInput.type = 'password';
+codeInput.value = '';
 codeSolution.classList.add("codeSolution");
 codeDescr.innerText = "CVC2 или CVV2:";
 codeSolution.innerText = "3 цифры";
@@ -299,14 +303,17 @@ cardTypeDescr.classList.add("cardTypeDescr");
 cardTypeDescr.classList.add("cardDescr");
 cardTypeInput.classList.add("cardTypeInput");
 cardTypeDebet.classList.add("cardTypeDebet");
-
+cardTypeDebet.style.width = '20px';
+cardTypeCredit.style.width = '20px';
 cardTypeCredit.classList.add("cardTypeCredit");
+
 
 cardTypeDescr.innerText = "Тип карты:";
 Object.assign(cardTypeDebet, {
   type: "radio",
   name: "cardType",
-  value: "debet"
+  value: "debet",
+  checked: true
 });
 Object.assign(cardTypeCredit, {
   type: "radio",
@@ -476,7 +483,7 @@ userBirthdayBox.appendChild(userBirthdayDescr);
 userBirthdayBox.appendChild(userBirthdayInput);
 userBirthdayBox.appendChild(userBirthdayCalendar);
 userBirthdayDescr.innerText = "Дата рождения:";
-userBirthdayInput.type = "text";
+userBirthdayInput.type = "date";
 
 userGenderBox.appendChild(userGenderDescr);
 userGenderBox.appendChild(userGenderInput);
@@ -584,6 +591,7 @@ for (let i = 0, len = formFields.length; i < len; i++) {
   addClass(formFields[i].firstChild, "descriptionFields");
 }
 let userData = [];
+let creditCard = [];
 function makeArray() {
   userData = [];
   for (let i in formFields) {
@@ -611,6 +619,17 @@ function makeArray() {
   console.log(userData);
 }
 
+function cardDate() {
+  creditCard[0] = cardNumberInput.value;
+  creditCard[1] = monthYearInput.value;
+  creditCard[2] = codeInput.value;
+  if (cardTypeDebet.checked) { creditCard[3] = 'debet' }
+  else { creditCard[3] = 'credit' }
+  console.log(creditCard);
+  console.log(codeInput.value);
+}
+cardDate();
+
 function changeSex() {
   if (formFields[4].childNodes[1].childNodes[0].checked) {
     userTelDescr.innerText = "Телефон вашей девушки:";
@@ -624,17 +643,17 @@ function changeSex() {
 }
 
 formFields[4].childNodes[1].addEventListener("change", changeSex);
-let regNumber = /[0-9]/;
+
 
 function isTelBel(event) {
-  
-  if ((userTelInput.value.slice(0, 4) == "+375") && regNumber.test(userTelInput.value.slice(1,userTelInput.value.length))) {
-    
+
+  if ((userTelInput.value.slice(0, 4) == "+375") && regNumber.test(userTelInput.value.slice(1, userTelInput.value.length))) {
+
     userTelInput.style.borderColor = "#a7a7a7";
     alertMesage.remove;
     userTelInput.style.backgroundImage = "url(./images/bel-flag.png)";
     return 'bel';
-  } else if ((userTelInput.value.slice(0, 1) == "+") && regNumber.test(userTelInput.value.slice(1,userTelInput.value.length))) {
+  } else if ((userTelInput.value.slice(0, 1) == "+") && regNumber.test(userTelInput.value.slice(1, userTelInput.value.length))) {
     userTelInput.style.borderColor = "#a7a7a7";
     alertMesage.remove;
     userTelInput.style.backgroundImage = "url(./images/world-flag.png)";
@@ -643,6 +662,48 @@ function isTelBel(event) {
   userTelInput.style.borderColor = "red";
   return false;
 }
+let counter = 0;
+function isCardTrue(arr) {
+  console.log(arr[1]);
+  cardDate();
+  if ((arr[0].length != 16)) {
+    if (counter > 0) {
+      cardNumberInput.style.borderColor = 'red';
+     creditCardContentForm.insertBefore(alertMesage, cardNumberBox);
+    }
+    counter += 1;
+    return false;
+  } else {
+    if (creditCardContentForm.hasChildNodes(alertMesage)) {
+      alertMesage.remove();
+    }
+    cardNumberInput.style.borderColor = '#a7a7a7';
+  }
+  if (!arr[1] || !regDate.test(arr[1])) {
+    monthYearInput.style.borderColor = 'red';
+    creditCardContentForm.insertBefore(alertMesage, monthYearBox);
+    return false;
+  } else {
+    if (creditCardContentForm.hasChildNodes(alertMesage)) {
+      alertMesage.remove();
+    }
+    monthYearInput.style.borderColor = '#a7a7a7';
+  }
+  if ((!arr[2]) || (('' + arr[2]).length != 3) || !regNumber.test(arr[2]) ) {
+    console.log(arr[1] + '*************');
+    codeInput.style.borderColor = 'red';
+    creditCardContentForm.insertBefore(alertMesage, codeBox);
+    return false;
+  } else {
+    if (creditCardContentForm.hasChildNodes(alertMesage)) {
+      alertMesage.remove();
+    }
+    codeInput.style.borderColor = '#a7a7a7';
+  }
+  cardDate();
+    return true;
+}
+
 
 /* ************************RESULT******************/
 resultContentBox.classList.add("resultContentBox");
@@ -675,14 +736,14 @@ addClass(formButtonsMass, "buttonControl");
 addClass(forms, "forms");
 forms[0].style.display = "block";
 formButtonsMass[0].classList.add("active");
-function checkName (name) {
+function checkName(name) {
   let reg = /[A-Za-zА-Яа-я]/
   if (reg.test(name)) return true;
-  return false; 
+  return false;
 }
-let regDate = /[0-9]\//;
-function checkDate (date){
-  if(regDate.test(date)) return true;
+
+function checkDate(date) {
+  if (regDate.test(date)) return true;
   return false;
 }
 
@@ -704,35 +765,35 @@ makeInputs();
 
 
 let stateTab = 0;
-let regEmail =  /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+let regEmail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 function isTru(arr) {
   for (let i = 0, len = arr.length; i < len; i++) {
-    if(i < 3) {
-      if (!checkName(arr[i])){
+    if (i < 3) {
+      if (!checkName(arr[i])) {
         personalDateContentForm.insertBefore(alertMesage, formFields[i]);
         inputs[i].style.borderColor = 'red';
         return false;
       } else {
-        if(personalDateContentForm.hasChildNodes(alertMesage)){
+        if (personalDateContentForm.hasChildNodes(alertMesage)) {
           alertMesage.remove();
         }
         inputs[i].style.borderColor = '#a7a7a7';
       }
     }
     if (i === 3) {
-      if (!checkDate(arr[i])){
+      if (!checkDate(arr[i])) {
         personalDateContentForm.insertBefore(alertMesage, formFields[i]);
         inputs[i].style.borderColor = 'red';
         return false;
       } else {
-        if(personalDateContentForm.hasChildNodes(alertMesage)){
+        if (personalDateContentForm.hasChildNodes(alertMesage)) {
           alertMesage.remove();
         }
         inputs[i].style.borderColor = '#a7a7a7';
       }
 
     }
-   
+
     if (arr[4] === 'male') {
       if (isTelBel() != 'bel') {
         personalDateContentForm.insertBefore(alertMesage, userTelBox);
@@ -747,35 +808,37 @@ function isTru(arr) {
         setPreset(pans);
       }
     }
-    if (i > 4 && i < 10 || i === 11)  {
-      if (!arr[i]){
+    if (i > 4 && i < 10 || i >= 11) {
+      if (!arr[i]) {
         personalDateContentForm.insertBefore(alertMesage, formFields[i]);
         inputs[i].style.borderColor = 'red';
         return false;
       } else {
-        if(personalDateContentForm.hasChildNodes(alertMesage)){
+        if (personalDateContentForm.hasChildNodes(alertMesage)) {
           alertMesage.remove();
         }
         inputs[i].style.borderColor = '#a7a7a7';
       }
     }
 
-    if(i === 10) {
-      
-      if(!regEmail.test(arr[i])) {
+    if (i === 10) {
+
+      if (!regEmail.test(arr[i])) {
         console.log(false);
         personalDateContentForm.insertBefore(alertMesage, userFriendBox);
         userFriendInput.style.borderColor = 'red';
         return false;
       } else {
-        if(personalDateContentForm.hasChildNodes(alertMesage)){
+        if (personalDateContentForm.hasChildNodes(alertMesage)) {
           alertMesage.remove();
         }
-        
+
         userFriendInput.style.borderColor = '#a7a7a7';
       }
     }
-   
+
+
+
   }
 
   return true;
@@ -787,7 +850,7 @@ function changeTab() {
   function tabsNext() {
     makeArray();
     if (isTru(userData)) {
-      if (stateTab < 2) {
+      if (stateTab === 0) {
         forms[stateTab + 1].style.display = "block";
         if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
           formButtonsMass[stateTab + 1].classList.add("active");
@@ -804,11 +867,32 @@ function changeTab() {
         prevButtonForm.style.display = "flex";
         textBack.innerText = "Личные данные";
       }
+      
+    }
+
+    if (isCardTrue(creditCard)) {
+      console.log('card true');
+      if (stateTab === 1) {
+        forms[stateTab + 1].style.display = "block";
+        if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
+          formButtonsMass[stateTab + 1].classList.add("active");
+        }
+        for (j = 0; j < 3; j++) {
+          if (j != stateTab + 1) {
+            forms[j].style.display = "none";
+            formButtonsMass[j].classList.remove("active");
+          }
+        }
+        stateTab += 1;
+      }
       if (stateTab === 2) {
         prevButtonForm.style.display = "flex";
         textBack.innerText = "Данные кредитной карты";
       }
+    } else {
+
     }
+
   }
 
   function tabPrev() {
@@ -889,9 +973,7 @@ const createContent = (arr, num, box) => {
 let state = 0;
 
 topMenuBox.appendChild(titleBox);
-userBirthdayInput.addEventListener('click', $(function() {
-  $(".userBirthdayInput").datepicker();
-}))
+
 
 
 formPartials(mainMenu, quantButtonsTop, mainMenuButtonBox);
