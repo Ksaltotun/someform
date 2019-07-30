@@ -15,6 +15,7 @@ const footerText = [
   "Инструкции",
   "Рекламодателям"
 ];
+const descriptionLabel = ['Имя: ', 'Фамилия: ', 'Отчество: ', 'Дата рождения: ', 'Пол: ', 'Страна проживания: ', 'Адрес, почтовый индекс: ', 'Девичья фамилия матери: ', 'Кодовое слово в вашем банке: ', 'Как вы узнали о нашем сайте: ', 'Email друга: ', '', '',];
 const formFieldQuant = 13;
 const mainMenu = [];
 const footerMenu = [];
@@ -153,7 +154,9 @@ const resultContentBox = document.createElement("div");
 const resultContentTitle = document.createElement("div");
 const resultContentForm = document.createElement("div");
 const resultContentCard = document.createElement("div");
+const resultDopInfoBoxWrapper = document.createElement('div');
 const resultDopInfoBox = document.createElement("div");
+const resultBoxForLabel = document.createElement("div");
 const resultCreditBox = document.createElement("div");
 const resultTableBox = document.createElement("div");
 /*********************************** */
@@ -186,7 +189,7 @@ function makeTable(arr) {
                   row.appendChild(cell);
               } else {
                   let cell = document.createElement('td');
-                  cell.innerText = 'Доп. инфо';
+                  cell.innerHTML = '<div class="showInfo">Доп. инфо</div>';
                   row.appendChild(cell);
               }
           }
@@ -743,7 +746,9 @@ resultContentBox.classList.add("resultContentBox");
 resultContentTitle.classList.add("resultContentTitle");
 resultContentForm.classList.add("resultContentForm");
 resultContentCard.classList.add("resultContentCard");
-resultDopInfoBox.classList.add('resultDopInfoBox')
+resultDopInfoBox.classList.add('resultDopInfoBox');
+resultDopInfoBoxWrapper.classList.add('resultDopInfoBoxWrapper');
+resultBoxForLabel.classList.add('resultBoxForLabel');
 resultCreditBox.classList.add('resutCreditBox');
 resultContentCard.innerText = 'Данные кредитной карты';
 resultContentTitle.innerText = "Личные данные";
@@ -752,7 +757,7 @@ resultContentBox.appendChild(resultContentTitle);
 resultContentBox.appendChild(resultContentForm);
 resultContentBox.appendChild(resultContentCard);
 boxForForm.appendChild(resultContentBox);
-resultContentForm.appendChild(resultDopInfoBox);
+
 resultContentForm.appendChild(resultCreditBox);
 resultContentForm.appendChild(resultTableBox);
 resultTableBox.appendChild(resultTable);
@@ -911,7 +916,7 @@ function changeTab() {
     }
 
     if (isCardTrue(creditCard)) {
-      console.log('card true');
+      
       if (stateTab === 1) {
         forms[stateTab + 1].style.display = "flex";
         if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
@@ -933,11 +938,35 @@ function changeTab() {
         resultTable.innerHTML = '';
         makeTable(resultData);
         
+        console.log(resultData);
+        for (let i = 0, len = userData.length; i < len; i ++) {
+          let dateRow = document.createElement('div');
+          let description = document.createElement('span');
+          let context = document.createElement('span');
+          if(userData[4] === 'Мужской'){
+            descriptionLabel[12] = 'Любимая футбольная команда:';
+          } 
+          if(userData[4] === 'женский'){
+            descriptionLabel[12] = 'Любимая сковорода:';
+          }
+          if(userData[4] === 'Мужской'){
+            descriptionLabel[11] = 'Номер телефона девушки:';
+          } 
+          if(userData[4] === 'женский'){
+            descriptionLabel[11] = 'Номер телефона парня:';
+          }
+          description.innerHTML = descriptionLabel[i] + '<br/>';
+          description.style.color = '#a7a7a7';
+          context.innerText = userData[i];
+          context.style.color = 'white';
+          dateRow.appendChild(description);
+          dateRow.appendChild(context);
+          console.log(i);
+          resultBoxForLabel.appendChild(dateRow);
+        }
+        
       }
-    } else {
-
-    }
-   
+    }   
 
   }
 
@@ -1053,13 +1082,55 @@ contentBox[3].appendChild(boxForChoise);
 contentBox[3].appendChild(boxForTypeForm);
 contentBox[3].appendChild(chatBox);
 
+
 topMenuBox.appendChild(mainMenuButtonBox);
 footerBox.appendChild(footerMenuBox);
 footerBox.appendChild(madeIn);
 root.appendChild(topMenuBox);
 root.appendChild(contentFrame);
 root.appendChild(footerBox);
+root.appendChild(resultDopInfoBoxWrapper);
+resultDopInfoBoxWrapper.appendChild(resultDopInfoBox);
+resultDopInfoBox.appendChild(resultBoxForLabel);
+let displayed = 0;
+let displayedI = 0;
+
+function showDopInfo (event) {
+  
+  if(event.target === resultContentCard) {
+    
+    
+    if (displayed === 0) {
+      resultCreditBox.innerHTML = '<div class="numberCard"></div><div class="varantyYear"></div><div class="typeCard"></div>';
+    document.querySelector('.numberCard').innerText = 'Номер: ' + (creditCard[0] + '').slice(0, 4) + ' ' + (creditCard[0] + '').slice(4, 8)  + ' ' + (creditCard[0] + '').slice(8, 12) + ' ' + (creditCard[0] + '').slice(12, 16);
+    document.querySelector('.varantyYear').innerText ='Месяц/год: ' +  creditCard[1];
+    document.querySelector('.typeCard').innerText = 'Тип карты: ' + (creditCard[3] === 'debet')?'Дебетная':'Кредитная';
+    resultCreditBox.style.display = 'flex';
+    displayed += 1;
+    } else {
+      resultCreditBox.style.display = 'none';
+      displayed = 0;
+    }
+    
+  }
+  
+  if(event.target.classList.contains('showInfo')) {
+    console.log(event.target +'*****');
+    
+    resultDopInfoBoxWrapper.style.display = 'flex';
+    console.log(resultDopInfoBoxWrapper.style.display + '******');
+    if (displayedI === 0) {
+      resultDopInfoBoxWrapper.style.display = 'flex';
+    displayedI += 1;
+    } else {
+      resultDopInfoBoxWrapper.style.display = 'none';
+      displayedI = 0;
+    }
+    
+
+  }
+ 
+} 
 
 
-
-console.log(resultData);
+document.body.addEventListener ('click', showDopInfo);
