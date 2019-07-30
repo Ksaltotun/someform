@@ -153,16 +153,47 @@ const resultContentBox = document.createElement("div");
 const resultContentTitle = document.createElement("div");
 const resultContentForm = document.createElement("div");
 const resultContentCard = document.createElement("div");
+const resultDopInfoBox = document.createElement("div");
+const resultCreditBox = document.createElement("div");
+const resultTableBox = document.createElement("div");
 /*********************************** */
 
 const nextButonForm = document.createElement("div");
 const prevButtonForm = document.createElement("div");
 const backArrow = document.createElement("div");
 const textBack = document.createElement("div");
+const resultTable = document.createElement('table');
+const resultHead = ['Имя', 'Фамилия', 'Отчество', 'Дата рождения', 'Пол', 'Страна', 'Инфо'];
 /*For choise box*/
 const boxForChoise = document.createElement("div");
 let regNumber = /[0-9]/;
 let regDate = /^[0-9-/]*$/;
+let stateTab = 0;
+let resultData = [];
+function makeTable(arr) {
+  for (let i = 0; i < 2; i++) {
+      let row = document.createElement('tr');
+      for (let j = 0; j < 7; j++) {
+          if (i === 0) {
+              let cell = document.createElement('th');
+              cell.innerText = resultHead[j];
+              row.appendChild(cell);
+          }
+          if (i === 1) {
+              if (j < 6) {
+                  let cell = document.createElement('td');
+                  cell.innerText = arr[j];
+                  row.appendChild(cell);
+              } else {
+                  let cell = document.createElement('td');
+                  cell.innerText = 'Доп. инфо';
+                  row.appendChild(cell);
+              }
+          }
+      }
+      resultTable.appendChild(row);
+  }
+}
 
 for (let i = 0; i < 4; i++) {
   let buff = document.createElement("div");
@@ -496,13 +527,13 @@ userGenderInputMale.innerText = "Мужской";
 Object.assign(userGenderInputMale, {
   type: "radio",
   name: "sex",
-  value: "Male",
+  value: "Мужской",
   checked: true
 });
 Object.assign(userGenderInputFemale, {
   type: "radio",
   name: "sex",
-  value: "Female"
+  value: "Женский"
 });
 userGenderDescr.innerText = "Пол:";
 userCountryBox.appendChild(userCountryDescr);
@@ -598,9 +629,9 @@ function makeArray() {
     if (!isNaN(i) && formFields[i].classList) {
       if (formFields[i].classList.contains("userGenderBox")) {
         if (formFields[i].childNodes[1].childNodes[0].checked) {
-          userData.push("male");
+          userData.push("Мужской");
         } else {
-          userData.push("female");
+          userData.push("Женский");
         }
       }
       if (formFields[i].classList.contains("userCountryBox")) {
@@ -616,7 +647,7 @@ function makeArray() {
       }
     }
   }
-  console.log(userData);
+ 
 }
 
 function cardDate() {
@@ -625,8 +656,7 @@ function cardDate() {
   creditCard[2] = codeInput.value;
   if (cardTypeDebet.checked) { creditCard[3] = 'debet' }
   else { creditCard[3] = 'credit' }
-  console.log(creditCard);
-  console.log(codeInput.value);
+  
 }
 cardDate();
 
@@ -664,14 +694,17 @@ function isTelBel(event) {
 }
 let counter = 0;
 function isCardTrue(arr) {
-  console.log(arr[1]);
+  
   cardDate();
   if ((arr[0].length != 16)) {
     if (counter > 0) {
       cardNumberInput.style.borderColor = 'red';
      creditCardContentForm.insertBefore(alertMesage, cardNumberBox);
     }
-    counter += 1;
+    if (stateTab === 1) {
+      counter += 1;
+    }
+    
     return false;
   } else {
     if (creditCardContentForm.hasChildNodes(alertMesage)) {
@@ -690,7 +723,7 @@ function isCardTrue(arr) {
     monthYearInput.style.borderColor = '#a7a7a7';
   }
   if ((!arr[2]) || (('' + arr[2]).length != 3) || !regNumber.test(arr[2]) ) {
-    console.log(arr[1] + '*************');
+    
     codeInput.style.borderColor = 'red';
     creditCardContentForm.insertBefore(alertMesage, codeBox);
     return false;
@@ -710,12 +743,23 @@ resultContentBox.classList.add("resultContentBox");
 resultContentTitle.classList.add("resultContentTitle");
 resultContentForm.classList.add("resultContentForm");
 resultContentCard.classList.add("resultContentCard");
-
-resultContentTitle.innerText = "Результат";
+resultDopInfoBox.classList.add('resultDopInfoBox')
+resultCreditBox.classList.add('resutCreditBox');
+resultContentCard.innerText = 'Данные кредитной карты';
+resultContentTitle.innerText = "Личные данные";
+resultTableBox.classList.add('resultTableBox');
 resultContentBox.appendChild(resultContentTitle);
 resultContentBox.appendChild(resultContentForm);
 resultContentBox.appendChild(resultContentCard);
 boxForForm.appendChild(resultContentBox);
+resultContentForm.appendChild(resultDopInfoBox);
+resultContentForm.appendChild(resultCreditBox);
+resultContentForm.appendChild(resultTableBox);
+resultTableBox.appendChild(resultTable);
+
+
+
+
 /* ----------------function switch tab-menu------------------- */
 nextButonForm.classList.add("nextButonForm");
 prevButtonForm.classList.add("prevButtonForm");
@@ -764,7 +808,7 @@ function makeInputs() {
 makeInputs();
 
 
-let stateTab = 0;
+
 let regEmail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 function isTru(arr) {
   for (let i = 0, len = arr.length; i < len; i++) {
@@ -794,14 +838,14 @@ function isTru(arr) {
 
     }
 
-    if (arr[4] === 'male') {
+    if (arr[4] === 'Мужской') {
       if (isTelBel() != 'bel') {
         personalDateContentForm.insertBefore(alertMesage, userTelBox);
         return false;
       }
-    } else if (arr[4] === 'female') {
+    } else if (arr[4] === 'Женский') {
       if (isTelBel() === 'import') {
-        userFootballInputField.placeholder = 'Tefal';
+        userFootballInputField.value = 'Tefal';
         userFootballInputField.disabled = true;
       } else if (isTelBel() === 'bel') {
         userFootballInputField.disabled = false;
@@ -824,7 +868,7 @@ function isTru(arr) {
     if (i === 10) {
 
       if (!regEmail.test(arr[i])) {
-        console.log(false);
+        
         personalDateContentForm.insertBefore(alertMesage, userFriendBox);
         userFriendInput.style.borderColor = 'red';
         return false;
@@ -836,11 +880,7 @@ function isTru(arr) {
         userFriendInput.style.borderColor = '#a7a7a7';
       }
     }
-
-
-
   }
-
   return true;
 }
 
@@ -873,7 +913,7 @@ function changeTab() {
     if (isCardTrue(creditCard)) {
       console.log('card true');
       if (stateTab === 1) {
-        forms[stateTab + 1].style.display = "block";
+        forms[stateTab + 1].style.display = "flex";
         if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
           formButtonsMass[stateTab + 1].classList.add("active");
         }
@@ -888,10 +928,16 @@ function changeTab() {
       if (stateTab === 2) {
         prevButtonForm.style.display = "flex";
         textBack.innerText = "Данные кредитной карты";
+        resultData = userData.concat(creditCard);
+        nextButonForm.innerText = "Сохранить";
+        resultTable.innerHTML = '';
+        makeTable(resultData);
+        
       }
     } else {
 
     }
+   
 
   }
 
@@ -912,6 +958,7 @@ function changeTab() {
     if (stateTab === 1) {
       prevButtonForm.style.display = "flex";
       textBack.innerText = "Личные данные";
+      nextButonForm.innerText = "Далее";
     }
     if (stateTab === 0) {
       prevButtonForm.style.display = "none";
@@ -920,8 +967,10 @@ function changeTab() {
 }
 changeTab();
 
-/*add some styles */
 
+
+/*add some styles */
+resultTable.classList.add('resultTable');
 boxForChoise.classList.add("boxForChoise");
 title.classList.add("title");
 h1.innerText = "Городской сайт";
@@ -1010,3 +1059,7 @@ footerBox.appendChild(madeIn);
 root.appendChild(topMenuBox);
 root.appendChild(contentFrame);
 root.appendChild(footerBox);
+
+
+
+console.log(resultData);
