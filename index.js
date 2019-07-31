@@ -20,6 +20,8 @@ const formFieldQuant = 13;
 const mainMenu = [];
 const footerMenu = [];
 const contentBox = [];
+const fileInput = document.createElement('input');
+
 const quantButtonsFooter = footerText.length;
 const quantButtonsTop = mainMenuText.length;
 const boxForTypeForm = document.createElement("div");
@@ -159,6 +161,10 @@ const resultDopInfoBox = document.createElement("div");
 const resultBoxForLabel = document.createElement("div");
 const resultCreditBox = document.createElement("div");
 const resultTableBox = document.createElement("div");
+
+const massResultForm = document.createElement("div");
+
+
 /*********************************** */
 
 const nextButonForm = document.createElement("div");
@@ -167,12 +173,87 @@ const backArrow = document.createElement("div");
 const textBack = document.createElement("div");
 const resultTable = document.createElement('table');
 const resultHead = ['Имя', 'Фамилия', 'Отчество', 'Дата рождения', 'Пол', 'Страна', 'Инфо'];
+const massResultHead = ['Имя', 'Фамилия', 'Отчество', 'Дата рождения', 'Пол', 'Страна', 'Функции'];
+const massResultTable = document.createElement('table');
+const massResultBox = document.createElement("div");
+/************************************* */
+massResultBox.classList.add('massResultBox');
+massResultTable.classList.add('massResultTable');
+massResultForm.classList.add('massResultForm');
+let str = '';
+let mass = [];
+let newMass = [];
+function makeMassTable(arr) {
+  
+  massResultTable.innerHTML = '';
+  for (let i = 0, len = arr.length; i < len; i++) {
+      let row = document.createElement('tr');
+      for (let j = 0; j < 7; j++) {
+          if (i === 0) {
+              let cell = document.createElement('th');
+              cell.innerText = massResultHead[j];
+              row.appendChild(cell);
+          }
+          if (i > 0) {
+              if (j < 6) {
+                  let cell = document.createElement('td');
+                  cell.innerText = arr[i][j];
+                  row.appendChild(cell);
+              } else {
+                  let cell = document.createElement('td');
+                  cell.innerHTML= '<span>Править</span>';
+                  row.appendChild(cell);
+              }
+          }
+      }
+      massResultTable.appendChild(row);
+ }
+  
+} 
+
+function CSVToArray(strData, strDelimiter) {
+  strDelimiter = (strDelimiter || ",");
+  var objPattern = new RegExp(
+      ("(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+          "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+          "([^\"\\" + strDelimiter + "\\r\\n]*))"
+      ),
+      "gi"
+  );
+  var arrData = [[]];
+  var arrMatches = null;
+  while (arrMatches = objPattern.exec(strData)) {
+      var strMatchedDelimiter = arrMatches[1];
+      if (
+          strMatchedDelimiter.length &&
+          (strMatchedDelimiter != strDelimiter)
+      ) {
+          arrData.push([]);
+      }
+      if (arrMatches[2]) {
+          var strMatchedValue = arrMatches[2].replace(
+              new RegExp("\"\"", "g"),
+              "\""
+          );
+      } else {
+          var strMatchedValue = arrMatches[3];
+      }
+      arrData[arrData.length - 1].push(strMatchedValue);
+  }
+  return (arrData);
+}
+
+
+
+
 /*For choise box*/
 const boxForChoise = document.createElement("div");
 let regNumber = /[0-9]/;
 let regDate = /^[0-9-/]*$/;
 let stateTab = 0;
 let resultData = [];
+fileInput.classList.add('fileInput');
+fileInput.type = 'file';
 function makeTable(arr) {
   for (let i = 0; i < 2; i++) {
       let row = document.createElement('tr');
@@ -235,10 +316,13 @@ for (let i = 0; i < 4; i++) {
     listBox.classList.add("listBox");
     let listTitle = document.createElement("div");
     listTitle.classList.add("listTitle");
-    listTitle.innerText = "Загрузить список";
+
+    fileInput.id = 'file';
+    listTitle.innerHTML = '<label for="file">Загрузить список</label>';
     let list = document.createElement("div");
-    list.innerText = "People-list.csv";
+    list.innerText = "Файл не выбран";
     list.classList.add("list");
+    listBox.appendChild(fileInput);
     listBox.appendChild(listTitle);
     listBox.appendChild(list);
     buff.appendChild(listBox);
@@ -252,6 +336,25 @@ for (let i = 0; i < 4; i++) {
   boxForChoise.appendChild(buff);
 }
 
+function fileChoise(event) {
+  boxForChoise.childNodes[2].childNodes[0].childNodes[2].innerText = event.target.files[0].name;
+  let files = event.target.files;
+  const fileReader = new FileReader;
+  fileReader.onload = function (e) {
+      str = e.target.result;
+      newMass = CSVToArray(str, ',').slice(1, 11);
+      console.log(newMass);
+      makeMassTable(newMass);
+      console.log(massResultTable);
+      massResultForm.appendChild(massResultTable);
+      massResultBox.appendChild(massResultForm);
+  }
+  fileReader.readAsText(files[0]);
+  
+}
+
+fileInput.addEventListener('change', fileChoise);
+
 let nextButton = document.querySelector(".nextButton");
 
 function clickNext(event) {
@@ -262,7 +365,17 @@ function clickNext(event) {
       chatBox.style.display = "block";
       boxForTypeForm.style.display = "block";
     } else {
-      console.log("mass");
+      console.log('go');
+
+      personalDateContentBox.style.display = 'none';
+      resultContentCard.style.display = 'none';
+      resultContentForm.style.display = 'none';
+      resultContentBox.style.display = "block";
+      chatBox.style.display = "block";
+      boxForTypeForm.style.display = "block";
+      formButtonsMass[0].classList.remove('active');
+      formButtonsMass[2].classList.add('active');
+      nextButonForm.innerText = "Сохранить";
     }
   }
 }
@@ -763,6 +876,7 @@ resultContentForm.appendChild(resultTableBox);
 resultTableBox.appendChild(resultTable);
 
 
+resultContentBox.appendChild(massResultBox);
 
 
 /* ----------------function switch tab-menu------------------- */

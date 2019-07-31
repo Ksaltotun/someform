@@ -52,7 +52,9 @@ body {
     font-size: 1.2em;
     margin-left: 10px;
 }
-
+.fileInput{
+    display: none;
+}
 .templateBox {
     transform: skew(-30deg);
     
@@ -264,6 +266,31 @@ body {
     color: red;
     margin-left: 20em;
 }
+.massResultBox{
+    width: 100%;
+    
+}
+.massResultTable{
+    width: 100%;
+    
+    
+}
+.massResultForm{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #696666;
+    border-radius: 5px;
+    height: 100%;
+    overflow-y: auto;
+}
+.massResultForm th{
+    border-top: none;
+}
+.massResultForm span{
+    color: #46ccac;
+    border-bottom: 1px dotted #46ccac;
+    cursor: pointer;
+}
 /*------------------------------------*/
 .creditCardContentBox{
     height: 100%;
@@ -387,7 +414,7 @@ td:first-child, th:first-child {
     height: 300px;
     width: 15em;
     left: 67%;
-    top: 35%;
+    top: 32%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
