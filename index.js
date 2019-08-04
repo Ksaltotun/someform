@@ -183,62 +183,66 @@ massResultForm.classList.add('massResultForm');
 let str = '';
 let mass = [];
 let newMass = [];
+let list = document.createElement("div");
+let tableMass = [];
+
 function makeMassTable(arr) {
-  
+
   massResultTable.innerHTML = '';
   for (let i = 0, len = arr.length; i < len; i++) {
-      let row = document.createElement('tr');
-      for (let j = 0; j < 7; j++) {
-          if (i === 0) {
-              let cell = document.createElement('th');
-              cell.innerText = massResultHead[j];
-              row.appendChild(cell);
-          }
-          if (i > 0) {
-              if (j < 6) {
-                  let cell = document.createElement('td');
-                  cell.innerText = arr[i][j];
-                  row.appendChild(cell);
-              } else {
-                  let cell = document.createElement('td');
-                  cell.innerHTML= '<span>Править</span>';
-                  row.appendChild(cell);
-              }
-          }
+    let row = document.createElement('tr');
+    for (let j = 0; j < 7; j++) {
+      if (i === 0) {
+        let cell = document.createElement('th');
+        cell.innerText = massResultHead[j];
+        row.appendChild(cell);
       }
-      massResultTable.appendChild(row);
- }
-  
-} 
+      if (i > 0) {
+        if (j < 6) {
+          let cell = document.createElement('td');
+          cell.innerText = arr[i][j];
+          row.appendChild(cell);
+        } else {
+          let cell = document.createElement('td');
+          cell.innerHTML = '<span>Править</span>';
+          row.appendChild(cell);
+        }
+      }
+    }
+
+    massResultTable.appendChild(row);
+  }
+
+}
 
 function CSVToArray(strData, strDelimiter) {
   strDelimiter = (strDelimiter || ",");
   var objPattern = new RegExp(
-      ("(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
-          "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-          "([^\"\\" + strDelimiter + "\\r\\n]*))"
-      ),
-      "gi"
+    ("(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+      "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+      "([^\"\\" + strDelimiter + "\\r\\n]*))"
+    ),
+    "gi"
   );
   var arrData = [[]];
   var arrMatches = null;
   while (arrMatches = objPattern.exec(strData)) {
-      var strMatchedDelimiter = arrMatches[1];
-      if (
-          strMatchedDelimiter.length &&
-          (strMatchedDelimiter != strDelimiter)
-      ) {
-          arrData.push([]);
-      }
-      if (arrMatches[2]) {
-          var strMatchedValue = arrMatches[2].replace(
-              new RegExp("\"\"", "g"),
-              "\""
-          );
-      } else {
-          var strMatchedValue = arrMatches[3];
-      }
-      arrData[arrData.length - 1].push(strMatchedValue);
+    var strMatchedDelimiter = arrMatches[1];
+    if (
+      strMatchedDelimiter.length &&
+      (strMatchedDelimiter != strDelimiter)
+    ) {
+      arrData.push([]);
+    }
+    if (arrMatches[2]) {
+      var strMatchedValue = arrMatches[2].replace(
+        new RegExp("\"\"", "g"),
+        "\""
+      );
+    } else {
+      var strMatchedValue = arrMatches[3];
+    }
+    arrData[arrData.length - 1].push(strMatchedValue);
   }
   return (arrData);
 }
@@ -256,26 +260,26 @@ fileInput.classList.add('fileInput');
 fileInput.type = 'file';
 function makeTable(arr) {
   for (let i = 0; i < 2; i++) {
-      let row = document.createElement('tr');
-      for (let j = 0; j < 7; j++) {
-          if (i === 0) {
-              let cell = document.createElement('th');
-              cell.innerText = resultHead[j];
-              row.appendChild(cell);
-          }
-          if (i === 1) {
-              if (j < 6) {
-                  let cell = document.createElement('td');
-                  cell.innerText = arr[j];
-                  row.appendChild(cell);
-              } else {
-                  let cell = document.createElement('td');
-                  cell.innerHTML = '<div class="showInfo">Доп. инфо</div>';
-                  row.appendChild(cell);
-              }
-          }
+    let row = document.createElement('tr');
+    for (let j = 0; j < 7; j++) {
+      if (i === 0) {
+        let cell = document.createElement('th');
+        cell.innerText = resultHead[j];
+        row.appendChild(cell);
       }
-      resultTable.appendChild(row);
+      if (i === 1) {
+        if (j < 6) {
+          let cell = document.createElement('td');
+          cell.innerText = arr[j];
+          row.appendChild(cell);
+        } else {
+          let cell = document.createElement('td');
+          cell.innerHTML = '<div class="showInfo">Доп. инфо</div>';
+          row.appendChild(cell);
+        }
+      }
+    }
+    resultTable.appendChild(row);
   }
 }
 
@@ -319,7 +323,7 @@ for (let i = 0; i < 4; i++) {
 
     fileInput.id = 'file';
     listTitle.innerHTML = '<label for="file">Загрузить список</label>';
-    let list = document.createElement("div");
+
     list.innerText = "Файл не выбран";
     list.classList.add("list");
     listBox.appendChild(fileInput);
@@ -337,25 +341,27 @@ for (let i = 0; i < 4; i++) {
 }
 
 function fileChoise(event) {
-  boxForChoise.childNodes[2].childNodes[0].childNodes[2].innerText = event.target.files[0].name;
+  list.innerText = event.target.files[0].name;
+  list.style.color = 'black';
   let files = event.target.files;
   const fileReader = new FileReader;
   fileReader.onload = function (e) {
-      str = e.target.result;
-      newMass = CSVToArray(str, ',').slice(1, 11);
-      console.log(newMass);
-      makeMassTable(newMass);
-      console.log(massResultTable);
-      massResultForm.appendChild(massResultTable);
-      massResultBox.appendChild(massResultForm);
+    str = e.target.result;
+    newMass = CSVToArray(str, ',').slice(1, 11);
+    makeMassTable(newMass);
+    massResultForm.appendChild(massResultTable);
+    massResultBox.appendChild(massResultForm);
   }
   fileReader.readAsText(files[0]);
-  
 }
 
 fileInput.addEventListener('change', fileChoise);
 
 let nextButton = document.querySelector(".nextButton");
+
+
+
+let stage = [0, 0, 0, 0, 0, 0];
 
 function clickNext(event) {
   if (event.target.classList.contains("nextButton")) {
@@ -365,18 +371,67 @@ function clickNext(event) {
       chatBox.style.display = "block";
       boxForTypeForm.style.display = "block";
     } else {
-      console.log('go');
+      if (newMass.length > 1) {
+        console.log('go');
 
-      personalDateContentBox.style.display = 'none';
-      resultContentCard.style.display = 'none';
-      resultContentForm.style.display = 'none';
-      resultContentBox.style.display = "block";
-      chatBox.style.display = "block";
-      boxForTypeForm.style.display = "block";
-      formButtonsMass[0].classList.remove('active');
-      formButtonsMass[2].classList.add('active');
-      nextButonForm.innerText = "Сохранить";
+        personalDateContentBox.style.display = 'none';
+        resultContentCard.style.display = 'none';
+        resultContentForm.style.display = 'none';
+        resultContentBox.style.display = "block";
+        chatBox.style.display = "block";
+        boxForTypeForm.style.display = "block";
+        formButtonsMass[0].classList.remove('active');
+        formButtonsMass[2].classList.add('active');
+        nextButonForm.innerText = "Сохранить";
+        tableUser = document.querySelector('.massResultTable');
+
+        console.log(tableUser);
+      } else {
+        console.log('sosamba');
+        list.style.color = 'red';
+      }
+
     }
+  }
+  if (event.target.tagName === 'TH') {
+
+    let num = event.target.cellIndex;
+    if (stage[num] === 0) {
+      stage[num] = 1
+    } else {
+      stage[num] = 0;
+    }
+
+    let field = event.target.innerText;
+    for (let i = 1, len = tableUser.childNodes.length; i < len; i++){
+      tableMass.push(tableUser.childNodes[i].innerText.split('\u0009'));
+    }
+
+    function sortTable (a, b) {
+      if (a[num] === b[num]){
+        return 0;
+      }
+      if(a[num] > b[num]){
+        return 1;
+      }
+      if(a[num] < b[num]){
+        return -1;
+      }
+    } 
+
+    console.log(tableMass);
+    console.log(num);
+    let buff1 = [];
+    if (num != 3 && num != 6) {
+      tableMass.sort(sortTable);
+    }
+    console.log(tableMass);
+    console.log('***');
+    for (let i = 1, len = tableUser.childNodes.length; i < len; i++){
+      tableUser.childNodes[i].innerHTML = `<td>${tableMass[i - 1][0]}</td><td>${tableMass[i - 1][1]}</td><td>${tableMass[i - 1][2]}</td><td>${tableMass[i - 1][3]}</td><td>${tableMass[i - 1][4]}</td><td>${tableMass[i -1 ][5]}</td><td><span>${tableMass[i -1 ][6]}</span></td>`;
+    }
+     
+    tableMass = [];
   }
 }
 
@@ -763,7 +818,7 @@ function makeArray() {
       }
     }
   }
- 
+
 }
 
 function cardDate() {
@@ -772,7 +827,7 @@ function cardDate() {
   creditCard[2] = codeInput.value;
   if (cardTypeDebet.checked) { creditCard[3] = 'debet' }
   else { creditCard[3] = 'credit' }
-  
+
 }
 cardDate();
 
@@ -810,17 +865,17 @@ function isTelBel(event) {
 }
 let counter = 0;
 function isCardTrue(arr) {
-  
+
   cardDate();
   if ((arr[0].length != 16)) {
     if (counter > 0) {
       cardNumberInput.style.borderColor = 'red';
-     creditCardContentForm.insertBefore(alertMesage, cardNumberBox);
+      creditCardContentForm.insertBefore(alertMesage, cardNumberBox);
     }
     if (stateTab === 1) {
       counter += 1;
     }
-    
+
     return false;
   } else {
     if (creditCardContentForm.hasChildNodes(alertMesage)) {
@@ -838,8 +893,8 @@ function isCardTrue(arr) {
     }
     monthYearInput.style.borderColor = '#a7a7a7';
   }
-  if ((!arr[2]) || (('' + arr[2]).length != 3) || !regNumber.test(arr[2]) ) {
-    
+  if ((!arr[2]) || (('' + arr[2]).length != 3) || !regNumber.test(arr[2])) {
+
     codeInput.style.borderColor = 'red';
     creditCardContentForm.insertBefore(alertMesage, codeBox);
     return false;
@@ -850,7 +905,7 @@ function isCardTrue(arr) {
     codeInput.style.borderColor = '#a7a7a7';
   }
   cardDate();
-    return true;
+  return true;
 }
 
 
@@ -987,7 +1042,7 @@ function isTru(arr) {
     if (i === 10) {
 
       if (!regEmail.test(arr[i])) {
-        
+
         personalDateContentForm.insertBefore(alertMesage, userFriendBox);
         userFriendInput.style.borderColor = 'red';
         return false;
@@ -1026,11 +1081,11 @@ function changeTab() {
         prevButtonForm.style.display = "flex";
         textBack.innerText = "Личные данные";
       }
-      
+
     }
 
     if (isCardTrue(creditCard)) {
-      
+
       if (stateTab === 1) {
         forms[stateTab + 1].style.display = "flex";
         if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
@@ -1051,22 +1106,22 @@ function changeTab() {
         nextButonForm.innerText = "Сохранить";
         resultTable.innerHTML = '';
         makeTable(resultData);
-        
+
         console.log(resultData);
-        for (let i = 0, len = userData.length; i < len; i ++) {
+        for (let i = 0, len = userData.length; i < len; i++) {
           let dateRow = document.createElement('div');
           let description = document.createElement('span');
           let context = document.createElement('span');
-          if(userData[4] === 'Мужской'){
+          if (userData[4] === 'Мужской') {
             descriptionLabel[12] = 'Любимая футбольная команда:';
-          } 
-          if(userData[4] === 'женский'){
+          }
+          if (userData[4] === 'женский') {
             descriptionLabel[12] = 'Любимая сковорода:';
           }
-          if(userData[4] === 'Мужской'){
+          if (userData[4] === 'Мужской') {
             descriptionLabel[11] = 'Номер телефона девушки:';
-          } 
-          if(userData[4] === 'женский'){
+          }
+          if (userData[4] === 'женский') {
             descriptionLabel[11] = 'Номер телефона парня:';
           }
           description.innerHTML = descriptionLabel[i] + '<br/>';
@@ -1078,9 +1133,9 @@ function changeTab() {
           console.log(i);
           resultBoxForLabel.appendChild(dateRow);
         }
-        
+
       }
-    }   
+    }
 
   }
 
@@ -1209,42 +1264,42 @@ resultDopInfoBox.appendChild(resultBoxForLabel);
 let displayed = 0;
 let displayedI = 0;
 
-function showDopInfo (event) {
-  
-  if(event.target === resultContentCard) {
-    
-    
+function showDopInfo(event) {
+
+  if (event.target === resultContentCard) {
+
+
     if (displayed === 0) {
       resultCreditBox.innerHTML = '<div class="numberCard"></div><div class="varantyYear"></div><div class="typeCard"></div>';
-    document.querySelector('.numberCard').innerText = 'Номер: ' + (creditCard[0] + '').slice(0, 4) + ' ' + (creditCard[0] + '').slice(4, 8)  + ' ' + (creditCard[0] + '').slice(8, 12) + ' ' + (creditCard[0] + '').slice(12, 16);
-    document.querySelector('.varantyYear').innerText ='Месяц/год: ' +  creditCard[1];
-    document.querySelector('.typeCard').innerText = 'Тип карты: ' + (creditCard[3] === 'debet')?'Дебетная':'Кредитная';
-    resultCreditBox.style.display = 'flex';
-    displayed += 1;
+      document.querySelector('.numberCard').innerText = 'Номер: ' + (creditCard[0] + '').slice(0, 4) + ' ' + (creditCard[0] + '').slice(4, 8) + ' ' + (creditCard[0] + '').slice(8, 12) + ' ' + (creditCard[0] + '').slice(12, 16);
+      document.querySelector('.varantyYear').innerText = 'Месяц/год: ' + creditCard[1];
+      document.querySelector('.typeCard').innerText = 'Тип карты: ' + (creditCard[3] === 'debet') ? 'Дебетная' : 'Кредитная';
+      resultCreditBox.style.display = 'flex';
+      displayed += 1;
     } else {
       resultCreditBox.style.display = 'none';
       displayed = 0;
     }
-    
+
   }
-  
-  if(event.target.classList.contains('showInfo')) {
-    console.log(event.target +'*****');
-    
+
+  if (event.target.classList.contains('showInfo')) {
+    console.log(event.target + '*****');
+
     resultDopInfoBoxWrapper.style.display = 'flex';
     console.log(resultDopInfoBoxWrapper.style.display + '******');
     if (displayedI === 0) {
       resultDopInfoBoxWrapper.style.display = 'flex';
-    displayedI += 1;
+      displayedI += 1;
     } else {
       resultDopInfoBoxWrapper.style.display = 'none';
       displayedI = 0;
     }
-    
+
 
   }
- 
-} 
+
+}
 
 
-document.body.addEventListener ('click', showDopInfo);
+document.body.addEventListener('click', showDopInfo);
