@@ -384,8 +384,6 @@ function clickNext(event) {
         formButtonsMass[2].classList.add('active');
         nextButonForm.innerText = "Сохранить";
         tableUser = document.querySelector('.massResultTable');
-
-        console.log(tableUser);
       } else {
         console.log('sosamba');
         list.style.color = 'red';
@@ -396,42 +394,84 @@ function clickNext(event) {
   if (event.target.tagName === 'TH') {
 
     let num = event.target.cellIndex;
+
+
+    let field = event.target.innerText;
+    for (let i = 1, len = tableUser.childNodes.length; i < len; i++) {
+      tableMass.push(tableUser.childNodes[i].innerText.split('\u0009'));
+    }
+
+    function sortTable(a, b) {
+      if (num != 3) {
+        if (stage[num] === 0) {
+          if (a[num] === b[num]) {
+            return 0;
+          }
+          if (a[num] > b[num]) {
+            return 1;
+          }
+          if (a[num] < b[num]) {
+            return -1;
+          }
+
+        } else {
+          if (a[num] === b[num]) {
+            return 0;
+          }
+          if (a[num] > b[num]) {
+            return -1;
+          }
+          if (a[num] < b[num]) {
+            return 1;
+          }
+        }
+
+      } else {
+        if (stage[num] === 0) {
+
+          if (a[num].slice(6, 10) != b[num].slice(6, 10)) {
+            return a[num].slice(6, 10) - b[num].slice(6, 10);
+          } else {
+            if (a[num].slice(3, 6) != b[num].slice(3, 5)) {
+              return a[num].slice(3, 5) - b[num].slice(3, 5);
+            } else {
+              if (a[num].slice(0, 2) != b[num].slice(0, 2)) {
+                return a[num].slice(0, 2) - b[num].slice(0, 2);
+              }
+            }
+          }
+        } else {
+          if (a[num].slice(6, 10) != b[num].slice(6, 10)) {
+            return b[num].slice(6, 10) - a[num].slice(6, 10);
+          } else {
+            if (b[num].slice(3, 6) != a[num].slice(3, 5)) {
+              return b[num].slice(3, 5) - a[num].slice(3, 5);
+            } else {
+              if (b[num].slice(0, 2) != a[num].slice(0, 2)) {
+                return b[num].slice(0, 2) - a[num].slice(0, 2);
+              }
+            }
+          }
+        }
+      }
+
+    }
+
+    
+    let buff1 = [];
+    if (num != 6) {
+      tableMass.sort(sortTable);
+    }
+    for (let i = 1, len = tableUser.childNodes.length; i < len; i++) {
+      tableUser.childNodes[i].innerHTML = `<td>${tableMass[i - 1][0]}</td><td>${tableMass[i - 1][1]}</td><td>${tableMass[i - 1][2]}</td><td>${tableMass[i - 1][3]}</td><td>${tableMass[i - 1][4]}</td><td>${tableMass[i - 1][5]}</td><td><span>${tableMass[i - 1][6]}</span></td>`;
+    }
+
+    tableMass = [];
     if (stage[num] === 0) {
       stage[num] = 1
     } else {
       stage[num] = 0;
     }
-
-    let field = event.target.innerText;
-    for (let i = 1, len = tableUser.childNodes.length; i < len; i++){
-      tableMass.push(tableUser.childNodes[i].innerText.split('\u0009'));
-    }
-
-    function sortTable (a, b) {
-      if (a[num] === b[num]){
-        return 0;
-      }
-      if(a[num] > b[num]){
-        return 1;
-      }
-      if(a[num] < b[num]){
-        return -1;
-      }
-    } 
-
-    console.log(tableMass);
-    console.log(num);
-    let buff1 = [];
-    if (num != 3 && num != 6) {
-      tableMass.sort(sortTable);
-    }
-    console.log(tableMass);
-    console.log('***');
-    for (let i = 1, len = tableUser.childNodes.length; i < len; i++){
-      tableUser.childNodes[i].innerHTML = `<td>${tableMass[i - 1][0]}</td><td>${tableMass[i - 1][1]}</td><td>${tableMass[i - 1][2]}</td><td>${tableMass[i - 1][3]}</td><td>${tableMass[i - 1][4]}</td><td>${tableMass[i -1 ][5]}</td><td><span>${tableMass[i -1 ][6]}</span></td>`;
-    }
-     
-    tableMass = [];
   }
 }
 
@@ -1300,6 +1340,5 @@ function showDopInfo(event) {
   }
 
 }
-
 
 document.body.addEventListener('click', showDopInfo);
