@@ -204,7 +204,7 @@ function makeMassTable(arr) {
           row.appendChild(cell);
         } else {
           let cell = document.createElement('td');
-          cell.innerHTML = '<span>Править</span>';
+          cell.innerHTML = `<span>Править</span>`;
           row.appendChild(cell);
         }
       }
@@ -457,7 +457,6 @@ function clickNext(event) {
 
     }
 
-    
     let buff1 = [];
     if (num != 6) {
       tableMass.sort(sortTable);
@@ -472,6 +471,48 @@ function clickNext(event) {
     } else {
       stage[num] = 0;
     }
+  }
+
+  if (event.target.tagName === 'SPAN' && event.target.parentNode.tagName === 'TD') {
+    let dateToEdit = [];
+    function returnNumber(arr1, arr2) {
+      for (let i = 0, len = arr2.length; i < len; i++) {
+
+        if (arr2[i].join().indexOf(arr1.slice(0, 6).join()) != -1) {
+          return i;
+        }
+      }
+    }
+    dateToEdit = event.target.parentNode.parentNode.innerText.split('\u0009');
+    let userID = returnNumber(dateToEdit, newMass);
+    let birthDay = '';
+    personalDateContentBox.style.display = 'block';
+    resultContentBox.style.display = 'none';
+    formButtonsMass[2].classList.remove('active');
+    formButtonsMass[0].classList.add('active');
+    massResultBox.style.display = 'none';
+    birthDay = newMass[userID][3].slice(6,10) + '-' +  newMass[userID][3].slice(3,5) + '-' + newMass[userID][3].slice(0,2);
+
+    
+    
+    for (let i = 0, len = inputs.length; i < len; i++) {
+      if (i != 4 ) {
+        inputs[i].value = newMass[userID][i];
+        
+      } else if (i === 4) {
+        if (newMass[userID][i] === 'Мужской') {
+          formFields[4].childNodes[1].firstChild.checked = true;
+          
+        } else {
+          formFields[4].childNodes[1].childNodes[2].checked = true;
+          
+        }
+      } 
+      if (i === 3) {
+        inputs[i].value = birthDay;
+      }
+    }
+
   }
 }
 
@@ -1021,8 +1062,6 @@ function makeInputs() {
 }
 makeInputs();
 
-
-
 let regEmail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 function isTru(arr) {
   for (let i = 0, len = arr.length; i < len; i++) {
@@ -1144,6 +1183,8 @@ function changeTab() {
         textBack.innerText = "Данные кредитной карты";
         resultData = userData.concat(creditCard);
         nextButonForm.innerText = "Сохранить";
+        resultContentCard.style.display = 'block';
+        resultContentForm.style.display = 'block';
         resultTable.innerHTML = '';
         makeTable(resultData);
 
