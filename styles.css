@@ -453,6 +453,7 @@ td:first-child, th:first-child {
 .buttonControl{
     width: 33%;
     text-align: center;
+    height: 30px;
 }
 
 .active{

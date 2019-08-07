@@ -32,7 +32,7 @@ const formButtons = document.createElement("div");
 const personalDate = document.createElement("div");
 const creditCartDate = document.createElement("div");
 const result = document.createElement("div");
-function addClass(element, classes){
+function addClass(element, classes) {
   let len = element.length;
   if (len) {
     for (let i = 0; i < len; i++) {
@@ -283,7 +283,7 @@ function CSVToArray(strData, strDelimiter) {
 
 /*For choise box*/
 const boxForChoise = document.createElement("div");
-let regNumber = /[0-9]/;
+let regNumber = /^[0-9 ]+$/;
 let regDate = /^[0-9-/]*$/;
 let stateTab = 0;
 let resultData = [];
@@ -324,7 +324,7 @@ for (let i = 0; i < 4; i++) {
     let radio0 = document.createElement("input");
     let radio0Lable = document.createElement("label");
     let radio1Lable = document.createElement("label");
-    
+
     radio0Lable.setAttribute('for', 'userChoise');
     radio0Lable.innerHTML = 'Персональная <br/>';
 
@@ -340,7 +340,7 @@ for (let i = 0; i < 4; i++) {
     radio1.type = 'radio';
     radio1.name = 'userChoise';
     radio1.value = 'mass';
-    
+
     form.appendChild(radio0);
     form.appendChild(radio0Lable);
     form.appendChild(radio1);
@@ -496,11 +496,11 @@ function clickNext(event) {
     }
     for (let i = 1, len = tableUser.childNodes.length; i < len; i++) {
       let buffStr = '';
-      for(let j = 0; j < 7; j++){
+      for (let j = 0; j < 7; j++) {
         if (j === 6) {
           buffStr += ('<td><span>' + tableMass[i - 1][j] + '</span></td>');
         } else {
-          buffStr +=  ('<td>' + tableMass[i - 1][j] + '</td>');
+          buffStr += ('<td>' + tableMass[i - 1][j] + '</td>');
         }
       }
 
@@ -536,21 +536,21 @@ function clickNext(event) {
     formButtonsMass[2].classList.remove('active');
     formButtonsMass[0].classList.add('active');
     massResultBox.style.display = 'none';
-    birthDay = newMass[userID][3].slice(6,10) + '-' +  newMass[userID][3].slice(3,5) + '-' + newMass[userID][3].slice(0,2);
+    birthDay = newMass[userID][3].slice(6, 10) + '-' + newMass[userID][3].slice(3, 5) + '-' + newMass[userID][3].slice(0, 2);
 
     for (let i = 0, len = inputs.length; i < len; i++) {
-      if (i != 4 ) {
+      if (i != 4) {
         inputs[i].value = newMass[userID][i];
-        
+
       } else if (i === 4) {
         if (newMass[userID][i] === 'Мужской') {
           formFields[4].childNodes[1].firstChild.checked = true;
-          
+
         } else {
           formFields[4].childNodes[1].childNodes[2].checked = true;
-          
+
         }
-      } 
+      }
       if (i === 3) {
         inputs[i].value = birthDay;
       }
@@ -690,7 +690,7 @@ usersMessageBox.classList.add("usersMessageBox");
 usersMessageText.classList.add("usersMessageText");
 usersMessageBox.appendChild(usersMessageText);
 
-setTimeout(function (){chatBoxMessageField.appendChild(annasMessageBox)} , 5000);
+setTimeout(function () { chatBoxMessageField.appendChild(annasMessageBox) }, 5000);
 function chattedClick() {
   let messageBox = document.createElement("div"),
     messageText = document.createElement("div"),
@@ -710,7 +710,7 @@ function chattedClick() {
     messageText.innerText = inputMessage.value;
     chatBoxMessageField.appendChild(messageBox);
     inputMessage.value = "";
-    setTimeout(function(){chatBoxMessageField.appendChild(suppMessageBox)}  , 1000);
+    setTimeout(function () { chatBoxMessageField.appendChild(suppMessageBox) }, 1000);
   }
   console.log(inputMessage.value);
 }
@@ -807,7 +807,7 @@ userBirthdayBox.appendChild(userBirthdayDescr);
 userBirthdayBox.appendChild(userBirthdayInput);
 userBirthdayBox.appendChild(userBirthdayCalendar);
 userBirthdayDescr.innerText = "Дата рождения:";
-userBirthdayInput.type = "data";
+userBirthdayInput.type = "date";
 
 userGenderBox.appendChild(userGenderDescr);
 userGenderBox.appendChild(userGenderInput);
@@ -946,7 +946,7 @@ function makeArray() {
 }
 
 function cardDate() {
-  creditCard[0] = cardNumberInput.value;
+  creditCard[0] = cardNumberInput.value.replace(/\s/g, '');
   creditCard[1] = monthYearInput.value;
   creditCard[2] = codeInput.value;
   if (cardTypeDebet.checked) { creditCard[3] = 'debet' }
@@ -988,10 +988,34 @@ function isTelBel(event) {
   return false;
 }
 let counter = 0;
-function isCardTrue(arr) {
+let count = 0;
+function helpMakeCardNum(e) {
+ 
+  
+  if (e.target === cardNumberInput) {
+    count ++;
+    console.log(count);
+    if (count === 4) {
+      cardNumberInput.value += ' ';
+      count = 0;
+    }
 
+  }
+   
+}
+
+function isDateTru (str) {
+  if (isNaN(str.slice(0,2)) || isNaN(str.slice(3,5)) ) return false;
+  if (str.length != 5) return false;
+  if (str.slice(0,2) - 12 < 0) return false;
+  if (str.slice(3,5) - 19 < 0) return false;
+  return true;
+}
+
+function isCardTrue(arr) {
   cardDate();
-  if ((arr[0].length != 16)) {
+  if ((arr[0].length != 16) || !regNumber.test(arr[0])) {
+    
     if (counter > 0) {
       cardNumberInput.style.borderColor = 'red';
       alertMesage.innerHTML = 'Это поле заполнено неправильно!';
@@ -1008,7 +1032,7 @@ function isCardTrue(arr) {
     }
     cardNumberInput.style.borderColor = '#a7a7a7';
   }
-  if (!arr[1] || !regDate.test(arr[1])) {
+  if (!isDateTru (arr[1])) {
     monthYearInput.style.borderColor = 'red';
     alertMesage.innerHTML = 'Это поле заполнено неправильно!';
     creditCardContentForm.insertBefore(alertMesage, monthYearBox);
@@ -1190,13 +1214,13 @@ function changeTab() {
   function tabsNext(e) {
     makeArray();
     if (stateTab === 0 && e.target.innerText === 'Сохранить' && state === 3) {
-      for (let i = 0, len = newMass.length; i < len; i++){
+      for (let i = 0, len = newMass.length; i < len; i++) {
         localStorage.setItem(newMass[i], 'no credit card info');
         location.reload();
       }
     }
 
-    if(e.target === nextButonForm || e.target === aproovYes || e.target === aproovNo){
+    if (e.target === nextButonForm || e.target === aproovYes || e.target === aproovNo) {
       if (isTru(userData)) {
         if (stateTab === 0) {
           console.log('button');
@@ -1216,11 +1240,11 @@ function changeTab() {
           prevButtonForm.style.display = "flex";
           textBack.innerText = "Личные данные";
         }
-  
+
       }
-  
+
       if (isCardTrue(creditCard)) {
-  
+
         if (stateTab === 1) {
           forms[stateTab + 1].style.display = "flex";
           if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
@@ -1243,7 +1267,7 @@ function changeTab() {
           resultContentForm.style.display = 'block';
           resultTable.innerHTML = '';
           makeTable(resultData);
-  
+
           console.log(resultData);
           for (let i = 0, len = userData.length; i < len; i++) {
             let dateRow = document.createElement('div');
@@ -1271,17 +1295,17 @@ function changeTab() {
             resultBoxForLabel.appendChild(dateRow);
           }
           stateTab += 1;
-        } else if (stateTab === 3 ) {
+        } else if (stateTab === 3) {
           aproovBox.style.display = 'block';
           console.log(e.target);
-          if (e.target === aproovYes){
+          if (e.target === aproovYes) {
             localStorage.setItem(userData, creditCard);
             location.reload();
           }
           if (e.target === aproovNo) {
             aproovBox.style.display = 'none';
           }
-          
+
         }
       }
     }
@@ -1289,7 +1313,9 @@ function changeTab() {
   }
 
   function tabPrev(e) {
-    if (e.target === prevButtonForm){
+    
+    if (e.target === prevButtonForm || e.target.parentNode === prevButtonForm) {
+      if (stateTab === 3) stateTab = 2;
       if (stateTab > 0) {
         forms[stateTab - 1].style.display = "block";
         if (!formButtonsMass[stateTab - 1].classList.contains("active")) {
@@ -1304,7 +1330,7 @@ function changeTab() {
         }
         stateTab -= 1;
       }
-      if (stateTab === 1) {
+      if (stateTab === 1 || stateTab === 2) {
         prevButtonForm.style.display = "flex";
         textBack.innerText = "Личные данные";
         nextButonForm.innerText = "Далее";
@@ -1332,7 +1358,7 @@ title.appendChild(h1);
 titleBox.appendChild(title);
 madeIn.innerText = "Сделано в Беларуси";
 chatBox.classList.add("chatBox");
-function formPartials (arr, quant, box){
+function formPartials(arr, quant, box) {
   let buffMass = [];
   for (let i = 0; i < quant; i++) {
     buffMass[i] = document.createElement("div");
@@ -1342,14 +1368,14 @@ function formPartials (arr, quant, box){
     box.appendChild(buffMass[i]);
   }
 };
-function customizeMenu(arrButtons, arrNames, addClass){
+function customizeMenu(arrButtons, arrNames, addClass) {
   for (let i = 0, len = arrButtons.length; i < len; i++) {
     arrButtons[i].innerText = arrNames[i];
     if (addClass) arrButtons[i].classList.add(addClass);
   }
 };
 
-function removeClass(element, classes){
+function removeClass(element, classes) {
   let len = element.length;
 
   if (len) {
@@ -1359,7 +1385,7 @@ function removeClass(element, classes){
   } else element.classList.removeClass(classes);
 };
 
-function createContent(arr, num, box){
+function createContent(arr, num, box) {
   for (let i = 0; i < num; i++) {
     arr[i] = document.createElement("div");
     box.appendChild(arr[i]);
@@ -1380,16 +1406,16 @@ createContent(contentBox, quantButtonsTop, contentFrame);
 addClass(contentBox, "contentBox");
 addClass(mainMenu, "buttons");
 function switchTab() {
-  
+
   document.body.addEventListener('click', swithContent);
-  
- 
-  
-  function swithContent (e){
+
+
+
+  function swithContent(e) {
     let menuButtons = document.querySelectorAll('.topMenuButton');
-   
+
     for (let i = 0; i < quantButtonsTop; i++) {
-      if (e.target ===  menuButtons[i]) {
+      if (e.target === menuButtons[i]) {
         console.log(menuButtons[i]);
         state = i;
       }
@@ -1402,7 +1428,7 @@ function switchTab() {
         mainMenu[i].parentNode.classList.remove("activeButton");
       }
     }
-    
+
   };
 
 }
@@ -1464,3 +1490,4 @@ function showDopInfo(event) {
 }
 
 document.body.addEventListener('click', showDopInfo);
+document.body.addEventListener('input', helpMakeCardNum);
