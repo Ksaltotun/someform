@@ -32,7 +32,7 @@ const formButtons = document.createElement("div");
 const personalDate = document.createElement("div");
 const creditCartDate = document.createElement("div");
 const result = document.createElement("div");
-const addClass = (element, classes) => {
+function addClass(element, classes){
   let len = element.length;
   if (len) {
     for (let i = 0; i < len; i++) {
@@ -176,7 +176,38 @@ const resultHead = ['Имя', 'Фамилия', 'Отчество', 'Дата р
 const massResultHead = ['Имя', 'Фамилия', 'Отчество', 'Дата рождения', 'Пол', 'Страна', 'Функции'];
 const massResultTable = document.createElement('table');
 const massResultBox = document.createElement("div");
+
+/**************************** */
+const aproovBox = document.createElement('div');
+const aproovForm = document.createElement('div');
+const aproovTextBox = document.createElement('div');
+const aproovButtonsBox = document.createElement('div');
+const aproovYes = document.createElement('button');
+const aproovNo = document.createElement('button');
+
 /************************************* */
+
+aproovBox.classList.add('aproovBox');
+aproovForm.classList.add('aproovForm');
+aproovTextBox.classList.add('aproovTextBox');
+aproovButtonsBox.classList.add('aproovButtonsBox');
+aproovYes.classList.add('aproovYes');
+aproovNo.classList.add('aproovNo');
+aproovYes.classList.add('aproovButton');
+aproovNo.classList.add('aproovButton');
+
+aproovTextBox.innerText = 'Хотите сохранить данные в csv формате?';
+aproovYes.innerText = 'YES';
+aproovNo.innerText = 'NO';
+/*************************************** */
+
+aproovBox.appendChild(aproovForm);
+aproovForm.appendChild(aproovTextBox);
+aproovForm.appendChild(aproovButtonsBox);
+aproovButtonsBox.appendChild(aproovYes);
+aproovButtonsBox.appendChild(aproovNo);
+
+/***************************************** */
 massResultBox.classList.add('massResultBox');
 massResultTable.classList.add('massResultTable');
 massResultForm.classList.add('massResultForm');
@@ -204,7 +235,7 @@ function makeMassTable(arr) {
           row.appendChild(cell);
         } else {
           let cell = document.createElement('td');
-          cell.innerHTML = `<span>Править</span>`;
+          cell.innerHTML = '<span>Править</span>';
           row.appendChild(cell);
         }
       }
@@ -293,22 +324,23 @@ for (let i = 0; i < 4; i++) {
     let radio0 = document.createElement("input");
     let radio0Lable = document.createElement("label");
     let radio1Lable = document.createElement("label");
-    Object.assign(radio0Lable, {
-      for: "userChoise",
-      innerHTML: "Персональная <br/>"
-    });
-    Object.assign(radio0, {
-      type: "radio",
-      name: "userChoise",
-      value: "person",
-      checked: true
-    });
+    
+    radio0Lable.setAttribute('for', 'userChoise');
+    radio0Lable.innerHTML = 'Персональная <br/>';
+
+    radio0.type = 'radio';
+    radio0.name = 'userChoise';
+    radio0.value = 'person';
+    radio0.checked = true;
+
     let radio1 = document.createElement("input");
-    Object.assign(radio1Lable, {
-      for: "userChoise",
-      innerText: "Регистрация пользователей списком"
-    });
-    Object.assign(radio1, { type: "radio", name: "userChoise", value: "mass" });
+    radio1Lable.setAttribute('for', 'userChoise');
+    radio1Lable.innerText = 'Регистрация пользователей списком';
+
+    radio1.type = 'radio';
+    radio1.name = 'userChoise';
+    radio1.value = 'mass';
+    
     form.appendChild(radio0);
     form.appendChild(radio0Lable);
     form.appendChild(radio1);
@@ -379,6 +411,7 @@ function clickNext(event) {
         resultContentForm.style.display = 'none';
         resultContentBox.style.display = "block";
         chatBox.style.display = "block";
+        console.log(boxForTypeForm);
         boxForTypeForm.style.display = "block";
         formButtonsMass[0].classList.remove('active');
         formButtonsMass[2].classList.add('active');
@@ -462,7 +495,17 @@ function clickNext(event) {
       tableMass.sort(sortTable);
     }
     for (let i = 1, len = tableUser.childNodes.length; i < len; i++) {
-      tableUser.childNodes[i].innerHTML = `<td>${tableMass[i - 1][0]}</td><td>${tableMass[i - 1][1]}</td><td>${tableMass[i - 1][2]}</td><td>${tableMass[i - 1][3]}</td><td>${tableMass[i - 1][4]}</td><td>${tableMass[i - 1][5]}</td><td><span>${tableMass[i - 1][6]}</span></td>`;
+      let buffStr = '';
+      for(let j = 0; j < 7; j++){
+        if (j === 6) {
+          buffStr += ('<td><span>' + tableMass[i - 1][j] + '</span></td>');
+        } else {
+          buffStr +=  ('<td>' + tableMass[i - 1][j] + '</td>');
+        }
+      }
+
+      console.log(buffStr);
+      tableUser.childNodes[i].innerHTML = buffStr;
     }
 
     tableMass = [];
@@ -487,14 +530,14 @@ function clickNext(event) {
     let userID = returnNumber(dateToEdit, newMass);
     let birthDay = '';
     personalDateContentBox.style.display = 'block';
+    nextButonForm.innerText = 'Далее';
     resultContentBox.style.display = 'none';
+    console.log('button');
     formButtonsMass[2].classList.remove('active');
     formButtonsMass[0].classList.add('active');
     massResultBox.style.display = 'none';
     birthDay = newMass[userID][3].slice(6,10) + '-' +  newMass[userID][3].slice(3,5) + '-' + newMass[userID][3].slice(0,2);
 
-    
-    
     for (let i = 0, len = inputs.length; i < len; i++) {
       if (i != 4 ) {
         inputs[i].value = newMass[userID][i];
@@ -592,17 +635,15 @@ cardTypeCredit.classList.add("cardTypeCredit");
 
 
 cardTypeDescr.innerText = "Тип карты:";
-Object.assign(cardTypeDebet, {
-  type: "radio",
-  name: "cardType",
-  value: "debet",
-  checked: true
-});
-Object.assign(cardTypeCredit, {
-  type: "radio",
-  name: "cardType",
-  value: "credit"
-});
+cardTypeDebet.type = 'radio';
+cardTypeDebet.name = 'cardType';
+cardTypeDebet.value = 'debet';
+cardTypeDebet.checked = true;
+
+cardTypeCredit.type = 'radio';
+cardTypeCredit.name = 'cardType';
+cardTypeCredit.value = 'debet';
+
 cardTypeInput.appendChild(cardTypeDebet);
 cardTypeInput.appendChild(document.createTextNode("Дебетная"));
 cardTypeInput.appendChild(cardTypeCredit);
@@ -649,7 +690,7 @@ usersMessageBox.classList.add("usersMessageBox");
 usersMessageText.classList.add("usersMessageText");
 usersMessageBox.appendChild(usersMessageText);
 
-setTimeout(() => chatBoxMessageField.appendChild(annasMessageBox), 5000);
+setTimeout(function (){chatBoxMessageField.appendChild(annasMessageBox)} , 5000);
 function chattedClick() {
   let messageBox = document.createElement("div"),
     messageText = document.createElement("div"),
@@ -667,9 +708,9 @@ function chattedClick() {
   messageBox.appendChild(messageText);
   if (inputMessage.value.length) {
     messageText.innerText = inputMessage.value;
-    chatBoxMessageField.append(messageBox);
+    chatBoxMessageField.appendChild(messageBox);
     inputMessage.value = "";
-    setTimeout(() => chatBoxMessageField.appendChild(suppMessageBox), 1000);
+    setTimeout(function(){chatBoxMessageField.appendChild(suppMessageBox)}  , 1000);
   }
   console.log(inputMessage.value);
 }
@@ -766,7 +807,7 @@ userBirthdayBox.appendChild(userBirthdayDescr);
 userBirthdayBox.appendChild(userBirthdayInput);
 userBirthdayBox.appendChild(userBirthdayCalendar);
 userBirthdayDescr.innerText = "Дата рождения:";
-userBirthdayInput.type = "date";
+userBirthdayInput.type = "data";
 
 userGenderBox.appendChild(userGenderDescr);
 userGenderBox.appendChild(userGenderInput);
@@ -776,17 +817,19 @@ userGenderInput.appendChild(userGenderInputFemale);
 userGenderInput.appendChild(document.createTextNode("Женский"));
 userGenderInputFemale.innerText = "Женский";
 userGenderInputMale.innerText = "Мужской";
-Object.assign(userGenderInputMale, {
-  type: "radio",
-  name: "sex",
-  value: "Мужской",
-  checked: true
-});
-Object.assign(userGenderInputFemale, {
-  type: "radio",
-  name: "sex",
-  value: "Женский"
-});
+
+userGenderInputMale.type = 'radio';
+userGenderInputMale.name = 'sex';
+userGenderInputMale.value = 'Мужской';
+userGenderInputMale.checked = true;
+
+userGenderInputFemale.type = 'radio';
+userGenderInputFemale.name = 'sex';
+userGenderInputFemale.value = 'Женский';
+
+
+
+
 userGenderDescr.innerText = "Пол:";
 userCountryBox.appendChild(userCountryDescr);
 userCountryBox.appendChild(userCountryInput);
@@ -951,6 +994,7 @@ function isCardTrue(arr) {
   if ((arr[0].length != 16)) {
     if (counter > 0) {
       cardNumberInput.style.borderColor = 'red';
+      alertMesage.innerHTML = 'Это поле заполнено неправильно!';
       creditCardContentForm.insertBefore(alertMesage, cardNumberBox);
     }
     if (stateTab === 1) {
@@ -960,35 +1004,36 @@ function isCardTrue(arr) {
     return false;
   } else {
     if (creditCardContentForm.hasChildNodes(alertMesage)) {
-      alertMesage.remove();
+      alertMesage.innerText = '';
     }
     cardNumberInput.style.borderColor = '#a7a7a7';
   }
   if (!arr[1] || !regDate.test(arr[1])) {
     monthYearInput.style.borderColor = 'red';
+    alertMesage.innerHTML = 'Это поле заполнено неправильно!';
     creditCardContentForm.insertBefore(alertMesage, monthYearBox);
     return false;
   } else {
     if (creditCardContentForm.hasChildNodes(alertMesage)) {
-      alertMesage.remove();
+      alertMesage.innerText = '';
     }
     monthYearInput.style.borderColor = '#a7a7a7';
   }
   if ((!arr[2]) || (('' + arr[2]).length != 3) || !regNumber.test(arr[2])) {
 
     codeInput.style.borderColor = 'red';
+    alertMesage.innerHTML = 'Это поле заполнено неправильно!';
     creditCardContentForm.insertBefore(alertMesage, codeBox);
     return false;
   } else {
     if (creditCardContentForm.hasChildNodes(alertMesage)) {
-      alertMesage.remove();
+      alertMesage.innerText = '';
     }
     codeInput.style.borderColor = '#a7a7a7';
   }
   cardDate();
   return true;
 }
-
 
 /* ************************RESULT******************/
 resultContentBox.classList.add("resultContentBox");
@@ -1011,9 +1056,7 @@ resultContentForm.appendChild(resultCreditBox);
 resultContentForm.appendChild(resultTableBox);
 resultTableBox.appendChild(resultTable);
 
-
 resultContentBox.appendChild(massResultBox);
-
 
 /* ----------------function switch tab-menu------------------- */
 nextButonForm.classList.add("nextButonForm");
@@ -1067,12 +1110,13 @@ function isTru(arr) {
   for (let i = 0, len = arr.length; i < len; i++) {
     if (i < 3) {
       if (!checkName(arr[i])) {
+        alertMesage.innerText = 'Это поле заполнено неправильно!';
         personalDateContentForm.insertBefore(alertMesage, formFields[i]);
         inputs[i].style.borderColor = 'red';
         return false;
       } else {
         if (personalDateContentForm.hasChildNodes(alertMesage)) {
-          alertMesage.remove();
+          alertMesage.innerText = ''
         }
         inputs[i].style.borderColor = '#a7a7a7';
       }
@@ -1080,11 +1124,12 @@ function isTru(arr) {
     if (i === 3) {
       if (!checkDate(arr[i])) {
         personalDateContentForm.insertBefore(alertMesage, formFields[i]);
+        alertMesage.innerText = 'Это поле заполнено неправильно!';
         inputs[i].style.borderColor = 'red';
         return false;
       } else {
         if (personalDateContentForm.hasChildNodes(alertMesage)) {
-          alertMesage.remove();
+          alertMesage.innerText = '';
         }
         inputs[i].style.borderColor = '#a7a7a7';
       }
@@ -1109,10 +1154,11 @@ function isTru(arr) {
       if (!arr[i]) {
         personalDateContentForm.insertBefore(alertMesage, formFields[i]);
         inputs[i].style.borderColor = 'red';
+        alertMesage.innerText = 'Это поле заполнено неправильно!';
         return false;
       } else {
         if (personalDateContentForm.hasChildNodes(alertMesage)) {
-          alertMesage.remove();
+          alertMesage.innerText = '';
         }
         inputs[i].style.borderColor = '#a7a7a7';
       }
@@ -1123,11 +1169,12 @@ function isTru(arr) {
       if (!regEmail.test(arr[i])) {
 
         personalDateContentForm.insertBefore(alertMesage, userFriendBox);
+        alertMesage.innerText = 'Это поле заполнено неправильно!';
         userFriendInput.style.borderColor = 'red';
         return false;
       } else {
         if (personalDateContentForm.hasChildNodes(alertMesage)) {
-          alertMesage.remove();
+          alertMesage.innerText = '';
         }
 
         userFriendInput.style.borderColor = '#a7a7a7';
@@ -1138,115 +1185,137 @@ function isTru(arr) {
 }
 
 function changeTab() {
-  nextButonForm.addEventListener("click", tabsNext);
-  prevButtonForm.addEventListener("click", tabPrev);
-  function tabsNext() {
+  document.body.addEventListener("click", tabsNext);
+  document.body.addEventListener("click", tabPrev);
+  function tabsNext(e) {
     makeArray();
-    if (isTru(userData)) {
-      if (stateTab === 0) {
-        forms[stateTab + 1].style.display = "block";
-        if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
-          formButtonsMass[stateTab + 1].classList.add("active");
+    if (stateTab === 0 && e.target.innerText === 'Сохранить' && state === 3) {
+      for (let i = 0, len = newMass.length; i < len; i++){
+        localStorage.setItem(newMass[i], 'no credit card info');
+        location.reload();
+      }
+    }
+
+    if(e.target === nextButonForm || e.target === aproovYes || e.target === aproovNo){
+      if (isTru(userData)) {
+        if (stateTab === 0) {
+          console.log('button');
+          forms[stateTab + 1].style.display = "block";
+          if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
+            formButtonsMass[stateTab + 1].classList.add("active");
+          }
+          for (j = 0; j < 3; j++) {
+            if (j != stateTab + 1) {
+              forms[j].style.display = "none";
+              formButtonsMass[j].classList.remove("active");
+            }
+          }
+          stateTab += 1;
+        }
+        if (stateTab === 1) {
+          prevButtonForm.style.display = "flex";
+          textBack.innerText = "Личные данные";
+        }
+  
+      }
+  
+      if (isCardTrue(creditCard)) {
+  
+        if (stateTab === 1) {
+          forms[stateTab + 1].style.display = "flex";
+          if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
+            formButtonsMass[stateTab + 1].classList.add("active");
+          }
+          for (j = 0; j < 3; j++) {
+            if (j != stateTab + 1) {
+              forms[j].style.display = "none";
+              formButtonsMass[j].classList.remove("active");
+            }
+          }
+          stateTab += 1;
+        }
+        if (stateTab === 2) {
+          prevButtonForm.style.display = "flex";
+          textBack.innerText = "Данные кредитной карты";
+          resultData = userData.concat(creditCard);
+          nextButonForm.innerText = "Сохранить";
+          resultContentCard.style.display = 'block';
+          resultContentForm.style.display = 'block';
+          resultTable.innerHTML = '';
+          makeTable(resultData);
+  
+          console.log(resultData);
+          for (let i = 0, len = userData.length; i < len; i++) {
+            let dateRow = document.createElement('div');
+            let description = document.createElement('span');
+            let context = document.createElement('span');
+            if (userData[4] === 'Мужской') {
+              descriptionLabel[12] = 'Любимая футбольная команда:';
+            }
+            if (userData[4] === 'женский') {
+              descriptionLabel[12] = 'Любимая сковорода:';
+            }
+            if (userData[4] === 'Мужской') {
+              descriptionLabel[11] = 'Номер телефона девушки:';
+            }
+            if (userData[4] === 'женский') {
+              descriptionLabel[11] = 'Номер телефона парня:';
+            }
+            description.innerHTML = descriptionLabel[i] + '<br/>';
+            description.style.color = '#a7a7a7';
+            context.innerText = userData[i];
+            context.style.color = 'white';
+            dateRow.appendChild(description);
+            dateRow.appendChild(context);
+            console.log(stateTab);
+            resultBoxForLabel.appendChild(dateRow);
+          }
+          stateTab += 1;
+        } else if (stateTab === 3 ) {
+          aproovBox.style.display = 'block';
+          console.log(e.target);
+          if (e.target === aproovYes){
+            localStorage.setItem(userData, creditCard);
+            location.reload();
+          }
+          if (e.target === aproovNo) {
+            aproovBox.style.display = 'none';
+          }
+          
+        }
+      }
+    }
+
+  }
+
+  function tabPrev(e) {
+    if (e.target === prevButtonForm){
+      if (stateTab > 0) {
+        forms[stateTab - 1].style.display = "block";
+        if (!formButtonsMass[stateTab - 1].classList.contains("active")) {
+          console.log('button');
+          formButtonsMass[stateTab - 1].classList.add("active");
         }
         for (j = 0; j < 3; j++) {
-          if (j != stateTab + 1) {
+          if (j != stateTab - 1) {
             forms[j].style.display = "none";
             formButtonsMass[j].classList.remove("active");
           }
         }
-        stateTab += 1;
+        stateTab -= 1;
       }
       if (stateTab === 1) {
         prevButtonForm.style.display = "flex";
         textBack.innerText = "Личные данные";
+        nextButonForm.innerText = "Далее";
       }
-
-    }
-
-    if (isCardTrue(creditCard)) {
-
-      if (stateTab === 1) {
-        forms[stateTab + 1].style.display = "flex";
-        if (!formButtonsMass[stateTab + 1].classList.contains("active")) {
-          formButtonsMass[stateTab + 1].classList.add("active");
-        }
-        for (j = 0; j < 3; j++) {
-          if (j != stateTab + 1) {
-            forms[j].style.display = "none";
-            formButtonsMass[j].classList.remove("active");
-          }
-        }
-        stateTab += 1;
+      if (stateTab === 0) {
+        prevButtonForm.style.display = "none";
       }
-      if (stateTab === 2) {
-        prevButtonForm.style.display = "flex";
-        textBack.innerText = "Данные кредитной карты";
-        resultData = userData.concat(creditCard);
-        nextButonForm.innerText = "Сохранить";
-        resultContentCard.style.display = 'block';
-        resultContentForm.style.display = 'block';
-        resultTable.innerHTML = '';
-        makeTable(resultData);
-
-        console.log(resultData);
-        for (let i = 0, len = userData.length; i < len; i++) {
-          let dateRow = document.createElement('div');
-          let description = document.createElement('span');
-          let context = document.createElement('span');
-          if (userData[4] === 'Мужской') {
-            descriptionLabel[12] = 'Любимая футбольная команда:';
-          }
-          if (userData[4] === 'женский') {
-            descriptionLabel[12] = 'Любимая сковорода:';
-          }
-          if (userData[4] === 'Мужской') {
-            descriptionLabel[11] = 'Номер телефона девушки:';
-          }
-          if (userData[4] === 'женский') {
-            descriptionLabel[11] = 'Номер телефона парня:';
-          }
-          description.innerHTML = descriptionLabel[i] + '<br/>';
-          description.style.color = '#a7a7a7';
-          context.innerText = userData[i];
-          context.style.color = 'white';
-          dateRow.appendChild(description);
-          dateRow.appendChild(context);
-          console.log(i);
-          resultBoxForLabel.appendChild(dateRow);
-        }
-
-      }
-    }
-
-  }
-
-  function tabPrev() {
-    if (stateTab > 0) {
-      forms[stateTab - 1].style.display = "block";
-      if (!formButtonsMass[stateTab - 1].classList.contains("active")) {
-        formButtonsMass[stateTab - 1].classList.add("active");
-      }
-      for (j = 0; j < 3; j++) {
-        if (j != stateTab - 1) {
-          forms[j].style.display = "none";
-          formButtonsMass[j].classList.remove("active");
-        }
-      }
-      stateTab -= 1;
-    }
-    if (stateTab === 1) {
-      prevButtonForm.style.display = "flex";
-      textBack.innerText = "Личные данные";
-      nextButonForm.innerText = "Далее";
-    }
-    if (stateTab === 0) {
-      prevButtonForm.style.display = "none";
     }
   }
 }
 changeTab();
-
-
 
 /*add some styles */
 resultTable.classList.add('resultTable');
@@ -1263,7 +1332,7 @@ title.appendChild(h1);
 titleBox.appendChild(title);
 madeIn.innerText = "Сделано в Беларуси";
 chatBox.classList.add("chatBox");
-const formPartials = (arr, quant, box) => {
+function formPartials (arr, quant, box){
   let buffMass = [];
   for (let i = 0; i < quant; i++) {
     buffMass[i] = document.createElement("div");
@@ -1273,14 +1342,14 @@ const formPartials = (arr, quant, box) => {
     box.appendChild(buffMass[i]);
   }
 };
-const customizeMenu = (arrButtons, arrNames, addClass) => {
+function customizeMenu(arrButtons, arrNames, addClass){
   for (let i = 0, len = arrButtons.length; i < len; i++) {
     arrButtons[i].innerText = arrNames[i];
     if (addClass) arrButtons[i].classList.add(addClass);
   }
 };
 
-const removeClass = (element, classes) => {
+function removeClass(element, classes){
   let len = element.length;
 
   if (len) {
@@ -1290,7 +1359,7 @@ const removeClass = (element, classes) => {
   } else element.classList.removeClass(classes);
 };
 
-const createContent = (arr, num, box) => {
+function createContent(arr, num, box){
   for (let i = 0; i < num; i++) {
     arr[i] = document.createElement("div");
     box.appendChild(arr[i]);
@@ -1302,8 +1371,6 @@ let state = 0;
 
 topMenuBox.appendChild(titleBox);
 
-
-
 formPartials(mainMenu, quantButtonsTop, mainMenuButtonBox);
 customizeMenu(mainMenu, mainMenuText, "topMenuButton");
 formPartials(footerMenu, quantButtonsFooter, footerMenuBox);
@@ -1312,26 +1379,40 @@ createContent(contentBox, quantButtonsTop, contentFrame);
 
 addClass(contentBox, "contentBox");
 addClass(mainMenu, "buttons");
-
-for (let i = 0; i < quantButtonsTop; i++) {
-  mainMenu[i].addEventListener("click", () => swithContent(i));
-}
-
-const swithContent = i => {
-  state = i;
-  contentBox[state].style.display = "block";
-  mainMenu[state].parentNode.classList.add("activeButton");
-  for (let i = 0; i < quantButtonsTop; i++) {
-    if (i != state) {
-      contentBox[i].style.display = "none";
-      mainMenu[i].parentNode.classList.remove("activeButton");
+function switchTab() {
+  
+  document.body.addEventListener('click', swithContent);
+  
+ 
+  
+  function swithContent (e){
+    let menuButtons = document.querySelectorAll('.topMenuButton');
+   
+    for (let i = 0; i < quantButtonsTop; i++) {
+      if (e.target ===  menuButtons[i]) {
+        console.log(menuButtons[i]);
+        state = i;
+      }
     }
-  }
-};
+    contentBox[state].style.display = "block";
+    mainMenu[state].parentNode.classList.add("activeButton");
+    for (let i = 0; i < quantButtonsTop; i++) {
+      if (i != state) {
+        contentBox[i].style.display = "none";
+        mainMenu[i].parentNode.classList.remove("activeButton");
+      }
+    }
+    
+  };
+
+}
+switchTab();
+
+
 contentBox[3].appendChild(boxForChoise);
 contentBox[3].appendChild(boxForTypeForm);
 contentBox[3].appendChild(chatBox);
-
+contentBox[3].appendChild(aproovBox);
 
 topMenuBox.appendChild(mainMenuButtonBox);
 footerBox.appendChild(footerMenuBox);
